@@ -66,9 +66,10 @@
       "Gene",
       "GeneAlias",
       "GenomeFragment",
-      "EnsemblGene"
+      "EnsemblGene",
+      "Article"
     ],
-    "lastLiquibaseTimestamp": 1638232024000,
+    "lastLiquibaseTimestamp": 1646775024000,
     "devServerPort": 9060,
     "enableGradleEnterprise": false
   }

@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mskcc.oncokb.transcript.OncokbTranscriptApp;
+import org.mskcc.oncokb.curation.OncokbTranscriptApp;
 import org.mskcc.oncokb.transcript.RedisTestContainerExtension;
 import org.mskcc.oncokb.transcript.config.TestSecurityConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;

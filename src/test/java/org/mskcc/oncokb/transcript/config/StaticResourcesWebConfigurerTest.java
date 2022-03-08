@@ -2,11 +2,12 @@ package org.mskcc.oncokb.transcript.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static org.mskcc.oncokb.transcript.config.StaticResourcesWebConfiguration.*;
+import static org.mskcc.oncokb.curation.config.StaticResourcesWebConfiguration.*;
 
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mskcc.oncokb.curation.config.StaticResourcesWebConfiguration;
 import org.springframework.http.CacheControl;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.WebApplicationContext;

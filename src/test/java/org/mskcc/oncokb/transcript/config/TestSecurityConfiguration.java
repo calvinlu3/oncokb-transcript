@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.mskcc.oncokb.curation.config.OAuth2Configuration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;

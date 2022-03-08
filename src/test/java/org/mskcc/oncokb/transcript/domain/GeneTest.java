@@ -3,6 +3,7 @@ package org.mskcc.oncokb.transcript.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
+import org.mskcc.oncokb.curation.domain.Gene;
 import org.mskcc.oncokb.transcript.web.rest.TestUtil;
 
 class GeneTest {

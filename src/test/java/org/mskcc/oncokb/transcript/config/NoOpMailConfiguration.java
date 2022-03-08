@@ -2,7 +2,7 @@ package org.mskcc.oncokb.transcript.config;
 
 import static org.mockito.Mockito.mock;
 
-import org.mskcc.oncokb.transcript.service.MailService;
+import org.mskcc.oncokb.curation.service.MailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

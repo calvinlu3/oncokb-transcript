@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mskcc.oncokb.transcript.domain.User;
-import org.mskcc.oncokb.transcript.service.dto.UserDTO;
+import org.mskcc.oncokb.curation.domain.User;
+import org.mskcc.oncokb.curation.service.dto.UserDTO;
+import org.mskcc.oncokb.curation.service.mapper.UserMapper;
 
 /**
  * Unit tests for {@link UserMapper}.

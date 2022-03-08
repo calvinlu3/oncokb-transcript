@@ -116,6 +116,7 @@ jhipster:
 application:
   oncokb:
     api-key:
+  ncbi-api-key: 49225afa16d5b5d76b541e7e1cc5f13dde09
   redis:
     enabled: false
     type: single
