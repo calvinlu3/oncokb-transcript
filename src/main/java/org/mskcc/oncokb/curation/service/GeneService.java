@@ -23,6 +23,8 @@ import org.mskcc.oncokb.curation.repository.GeneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,12 +101,22 @@ public class GeneService {
      * We do not use the default find all is because the FetchType.EAGER in the gene model.
      * The default will trigger a lot of queries to the database.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<Gene> findAll() {
+    public Page<Gene> findAll(Pageable pageable) {
         log.debug("Request to get all Genes");
-        return geneRepository.findAllWithGeneAliasAndEnsemblGenes();
+        return geneRepository.findAllWithGeneAliasAndEnsemblGenes(pageable);
+    }
+
+    /**
+     * Get all the genes with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<Gene> findAllWithEagerRelationships(Pageable pageable) {
+        return geneRepository.findAllWithEagerRelationships(pageable);
     }
 
     /**
@@ -116,7 +128,7 @@ public class GeneService {
     @Transactional(readOnly = true)
     public Optional<Gene> findOne(Long id) {
         log.debug("Request to get Gene : {}", id);
-        return geneRepository.findById(id);
+        return geneRepository.findOneWithEagerRelationships(id);
     }
 
     /**
