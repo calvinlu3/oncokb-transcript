@@ -94,6 +94,8 @@ public class CacheConfiguration extends CachingConfigurerSupport {
             createCache(cm, CacheCategory.GENE, CacheKeys.GENES_BY_ENTREZ_GENE_ID, jcacheConfiguration, cacheNameResolver);
             createCache(cm, CacheCategory.GENE, CacheKeys.GENES_BY_HUGO_SYMBOL, jcacheConfiguration, cacheNameResolver);
             createCache(cm, CacheCategory.GENE, CacheKeys.GENE_ALIASES_BY_NAME, jcacheConfiguration, cacheNameResolver);
+            createCache(cm, CacheCategory.USER, CacheKeys.USERS_BY_LOGIN_CACHE, jcacheConfiguration, cacheNameResolver);
+            createCache(cm, CacheCategory.USER, CacheKeys.USERS_BY_EMAIL_CACHE, jcacheConfiguration, cacheNameResolver);
             createCache(
                 cm,
                 CacheCategory.TRANSCRIPT,
@@ -101,7 +103,6 @@ public class CacheConfiguration extends CachingConfigurerSupport {
                 jcacheConfiguration,
                 cacheNameResolver
             );
-            // jhipster-needle-redis-add-entry
         };
     }
 
@@ -112,6 +113,15 @@ public class CacheConfiguration extends CachingConfigurerSupport {
         CacheNameResolver cacheNameResolver
     ) {
         return new GeneCacheResolver(cm, applicationProperties, cacheNameResolver);
+    }
+
+    @Bean
+    public CacheResolver userCacheResolver(
+        CacheManager cm,
+        ApplicationProperties applicationProperties,
+        CacheNameResolver cacheNameResolver
+    ) {
+        return new UserCacheResolver(cm, applicationProperties, cacheNameResolver);
     }
 
     @Bean
