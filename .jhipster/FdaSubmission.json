@@ -32,6 +32,10 @@
       "fieldTypeBlobContent": "text"
     },
     {
+      "fieldName": "platform",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "curated",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
@@ -40,6 +44,11 @@
       "fieldName": "genetic",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "additionalInfo",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
     }
   ],
   "relationships": [

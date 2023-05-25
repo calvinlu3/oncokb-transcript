@@ -12,8 +12,10 @@ export interface IFdaSubmission {
   dateReceived?: string | null;
   decisionDate?: string | null;
   description?: string | null;
+  platform?: string | null;
   curated?: boolean;
   genetic?: boolean;
+  additionalInfo?: string | null;
   deviceUsageIndications?: IDeviceUsageIndication[] | null;
   companionDiagnosticDevice?: ICompanionDiagnosticDevice | null;
   type?: IFdaSubmissionType | null;

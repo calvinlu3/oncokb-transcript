@@ -1,6 +1,5 @@
 package org.mskcc.oncokb.curation.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -30,6 +29,9 @@ public class CompanionDiagnosticDevice implements Serializable {
     @NotNull
     @Column(name = "manufacturer", nullable = false)
     private String manufacturer;
+
+    @Column(name = "indication_details")
+    private String indicationDetails;
 
     @OneToMany(mappedBy = "companionDiagnosticDevice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "companionDiagnosticDevice" }, allowSetters = true)
@@ -83,6 +85,19 @@ public class CompanionDiagnosticDevice implements Serializable {
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
+    }
+
+    public String getIndicationDetails() {
+        return this.indicationDetails;
+    }
+
+    public CompanionDiagnosticDevice indicationDetails(String indicationDetails) {
+        this.setIndicationDetails(indicationDetails);
+        return this;
+    }
+
+    public void setIndicationDetails(String indicationDetails) {
+        this.indicationDetails = indicationDetails;
     }
 
     public Set<FdaSubmission> getFdaSubmissions() {
@@ -167,6 +182,7 @@ public class CompanionDiagnosticDevice implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", manufacturer='" + getManufacturer() + "'" +
+            ", indicationDetails='" + getIndicationDetails() + "'" +
             "}";
     }
 }

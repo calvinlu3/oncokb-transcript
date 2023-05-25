@@ -77,6 +77,7 @@ import ConsequenceStore from 'app/entities/consequence/consequence.store';
 import clinicalTrialsGovCondition, {
   ClinicalTrialsGovConditionStore
 } from 'app/entities/clinical-trials-gov-condition/clinical-trials-gov-condition.store';
+import FdaDrugStore from 'app/entities/fda-drug/fda-drug.store';
 /* jhipster-needle-add-store-import - JHipster will add store here */
 
 export interface IRootStore {
@@ -95,6 +96,7 @@ export interface IRootStore {
   readonly ensemblGeneStore: EnsemblGeneStore;
   readonly drugStore: DrugStore;
   readonly drugSynonymStore: DrugSynonymStore;
+  readonly fdaDrugStore: FdaDrugStore;
   readonly specimenTypeStore: SpecimenTypeStore;
   readonly companionDiagnosticDeviceStore: CompanionDiagnosticDeviceStore;
   readonly fdaSubmissionTypeStore: FdaSubmissionTypeStore;
@@ -128,6 +130,7 @@ export function createStores(history: History): IRootStore {
   rootStore.ensemblGeneStore = new EnsemblGeneStore(rootStore);
   rootStore.drugStore = new DrugStore(rootStore);
   rootStore.drugSynonymStore = new DrugSynonymStore(rootStore);
+  rootStore.fdaDrugStore = new FdaDrugStore(rootStore);
   rootStore.specimenTypeStore = new SpecimenTypeStore(rootStore);
   rootStore.companionDiagnosticDeviceStore = new CompanionDiagnosticDeviceStore(rootStore);
   rootStore.fdaSubmissionTypeStore = new FdaSubmissionTypeStore(rootStore);

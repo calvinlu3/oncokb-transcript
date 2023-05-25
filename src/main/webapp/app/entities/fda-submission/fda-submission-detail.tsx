@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'app/shared/util/typed-inject';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col } from 'reactstrap';
+import { RouteComponentProps } from 'react-router-dom';
+import { Row, Col } from 'reactstrap';
 import { TextFormat } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootStore } from 'app/stores';
 import { APP_DATE_FORMAT, ENTITY_ACTION, ENTITY_TYPE } from 'app/config/constants';
@@ -62,6 +61,10 @@ export const FdaSubmissionDetail = (props: IFdaSubmissionDetailProps) => {
           </dt>
           <dd>{fdaSubmissionEntity.description}</dd>
           <dt>
+            <span id="platform">Platform</span>
+          </dt>
+          <dd>{fdaSubmissionEntity.platform}</dd>
+          <dt>
             <span id="curated">Curated</span>
           </dt>
           <dd>{fdaSubmissionEntity.curated ? 'true' : 'false'}</dd>
@@ -69,6 +72,10 @@ export const FdaSubmissionDetail = (props: IFdaSubmissionDetailProps) => {
             <span id="genetic">Genetic</span>
           </dt>
           <dd>{fdaSubmissionEntity.genetic ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="additionalInfo">Additional Info</span>
+          </dt>
+          <dd>{fdaSubmissionEntity.additionalInfo}</dd>
           <dt>Companion Diagnostic Device</dt>
           <dd>{fdaSubmissionEntity.companionDiagnosticDevice ? fdaSubmissionEntity.companionDiagnosticDevice.name : ''}</dd>
           <dt>Type</dt>

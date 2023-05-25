@@ -31,7 +31,7 @@ public class DeviceUsageIndication implements Serializable {
     private CancerType cancerType;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "synonyms", "deviceUsageIndications" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "fdaDrug", "synonyms", "deviceUsageIndications", "brands" }, allowSetters = true)
     private Drug drug;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

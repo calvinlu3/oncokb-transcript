@@ -6,6 +6,7 @@ public enum ElasticsearchIndexName {
     FDA_SUBMISSION("fdasubmission"),
     CANCER_TYPE("cancertype"),
     DRUG("drug"),
+    FDA_DRUG("fdaDrug"),
     GENE("gene"),
     ALTERATION("alteration");
 

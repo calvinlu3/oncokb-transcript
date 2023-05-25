@@ -32,6 +32,11 @@ public class Drug implements Serializable {
     @Column(name = "semantic_type")
     private String semanticType;
 
+    @JsonIgnoreProperties(value = { "drug" }, allowSetters = true)
+    @OneToOne
+    @JoinColumn(unique = true)
+    private FdaDrug fdaDrug;
+
     @OneToMany(mappedBy = "drug", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "drug" }, allowSetters = true)
     private Set<DrugSynonym> synonyms = new HashSet<>();
@@ -96,6 +101,19 @@ public class Drug implements Serializable {
 
     public void setSemanticType(String semanticType) {
         this.semanticType = semanticType;
+    }
+
+    public FdaDrug getFdaDrug() {
+        return this.fdaDrug;
+    }
+
+    public void setFdaDrug(FdaDrug fdaDrug) {
+        this.fdaDrug = fdaDrug;
+    }
+
+    public Drug fdaDrug(FdaDrug fdaDrug) {
+        this.setFdaDrug(fdaDrug);
+        return this;
     }
 
     public Set<DrugSynonym> getSynonyms() {

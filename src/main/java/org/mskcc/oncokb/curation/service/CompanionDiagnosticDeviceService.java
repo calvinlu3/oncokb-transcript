@@ -71,6 +71,9 @@ public class CompanionDiagnosticDeviceService {
                 if (companionDiagnosticDevice.getManufacturer() != null) {
                     existingCompanionDiagnosticDevice.setManufacturer(companionDiagnosticDevice.getManufacturer());
                 }
+                if (companionDiagnosticDevice.getIndicationDetails() != null) {
+                    existingCompanionDiagnosticDevice.setIndicationDetails(companionDiagnosticDevice.getIndicationDetails());
+                }
 
                 return existingCompanionDiagnosticDevice;
             })

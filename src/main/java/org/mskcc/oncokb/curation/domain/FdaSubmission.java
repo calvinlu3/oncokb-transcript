@@ -50,6 +50,9 @@ public class FdaSubmission implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "platform")
+    private String platform;
+
     @NotNull
     @Column(name = "curated", nullable = false)
     private Boolean curated = false;
@@ -58,16 +61,18 @@ public class FdaSubmission implements Serializable {
     @Column(name = "genetic", nullable = false)
     private Boolean genetic = false;
 
+    @Lob
+    @Column(name = "additional_info")
+    private String additionalInfo;
+
     @OneToMany(mappedBy = "fdaSubmission")
     @JsonIgnoreProperties(value = { "fdaSubmission", "alteration", "cancerType", "drug" }, allowSetters = true)
     private Set<DeviceUsageIndication> deviceUsageIndications = new HashSet<>();
 
-    @NotNull
     @ManyToOne
     @JsonIgnoreProperties(value = { "fdaSubmissions", "specimenTypes" }, allowSetters = true)
     private CompanionDiagnosticDevice companionDiagnosticDevice;
 
-    @NotNull
     @ManyToOne
     @JsonIgnoreProperties(value = { "fdaSubmissions" }, allowSetters = true)
     private FdaSubmissionType type;
@@ -178,6 +183,19 @@ public class FdaSubmission implements Serializable {
         this.description = description;
     }
 
+    public String getPlatform() {
+        return this.platform;
+    }
+
+    public FdaSubmission platform(String platform) {
+        this.setPlatform(platform);
+        return this;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
     public Boolean getCurated() {
         return this.curated;
     }
@@ -202,6 +220,19 @@ public class FdaSubmission implements Serializable {
 
     public void setGenetic(Boolean genetic) {
         this.genetic = genetic;
+    }
+
+    public String getAdditionalInfo() {
+        return this.additionalInfo;
+    }
+
+    public FdaSubmission additionalInfo(String additionalInfo) {
+        this.setAdditionalInfo(additionalInfo);
+        return this;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     public Set<DeviceUsageIndication> getDeviceUsageIndications() {
@@ -292,8 +323,10 @@ public class FdaSubmission implements Serializable {
             ", dateReceived='" + getDateReceived() + "'" +
             ", decisionDate='" + getDecisionDate() + "'" +
             ", description='" + getDescription() + "'" +
+            ", platform='" + getPlatform() + "'" +
             ", curated='" + getCurated() + "'" +
             ", genetic='" + getGenetic() + "'" +
+            ", additionalInfo='" + getAdditionalInfo() + "'" +
             "}";
     }
 }

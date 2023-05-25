@@ -43,6 +43,8 @@ public class ElasticsearchIndexService {
     private final CancerTypeSearchRepository cancerTypeSearchRepository;
     private final DrugRepository drugRepository;
     private final DrugSearchRepository drugSearchRepository;
+    private final FdaDrugRepository fdaDrugRepository;
+    private final FdaDrugSearchRepository fdaDrugSearchRepository;
     private final GeneRepository geneRepository;
     private final GeneSearchRepository geneSearchRepository;
     private final AlterationRepository alterationRepository;
@@ -60,6 +62,8 @@ public class ElasticsearchIndexService {
         CancerTypeSearchRepository cancerTypeSearchRepository,
         DrugRepository drugRepository,
         DrugSearchRepository drugSearchRepository,
+        FdaDrugRepository fdaDrugRepository,
+        FdaDrugSearchRepository fdaDrugSearchRepository,
         GeneRepository geneRepository,
         GeneSearchRepository geneSearchRepository,
         AlterationRepository alterationRepository,
@@ -76,6 +80,8 @@ public class ElasticsearchIndexService {
         this.cancerTypeSearchRepository = cancerTypeSearchRepository;
         this.drugRepository = drugRepository;
         this.drugSearchRepository = drugSearchRepository;
+        this.fdaDrugRepository = fdaDrugRepository;
+        this.fdaDrugSearchRepository = fdaDrugSearchRepository;
         this.geneRepository = geneRepository;
         this.geneSearchRepository = geneSearchRepository;
         this.alterationRepository = alterationRepository;
@@ -108,6 +114,9 @@ public class ElasticsearchIndexService {
                 }
                 if (indexNames.contains(ElasticsearchIndexName.DRUG.getName())) {
                     reindexForClass(Drug.class, drugRepository, drugSearchRepository);
+                }
+                if (indexNames.contains(ElasticsearchIndexName.FDA_DRUG.getName())) {
+                    reindexForClass(FdaDrug.class, fdaDrugRepository, fdaDrugSearchRepository);
                 }
                 if (indexNames.contains(ElasticsearchIndexName.GENE.getName())) {
                     reindexForClass(Gene.class, geneRepository, geneSearchRepository);

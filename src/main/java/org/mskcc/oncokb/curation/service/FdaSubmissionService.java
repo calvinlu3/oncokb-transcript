@@ -85,11 +85,17 @@ public class FdaSubmissionService {
                 if (fdaSubmission.getDescription() != null) {
                     existingFdaSubmission.setDescription(fdaSubmission.getDescription());
                 }
+                if (fdaSubmission.getPlatform() != null) {
+                    existingFdaSubmission.setPlatform(fdaSubmission.getPlatform());
+                }
                 if (fdaSubmission.getCurated() != null) {
                     existingFdaSubmission.setCurated(fdaSubmission.getCurated());
                 }
                 if (fdaSubmission.getGenetic() != null) {
                     existingFdaSubmission.setGenetic(fdaSubmission.getGenetic());
+                }
+                if (fdaSubmission.getAdditionalInfo() != null) {
+                    existingFdaSubmission.setAdditionalInfo(fdaSubmission.getAdditionalInfo());
                 }
 
                 return existingFdaSubmission;
