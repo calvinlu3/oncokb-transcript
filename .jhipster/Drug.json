@@ -32,15 +32,16 @@
     },
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "deviceUsageIndication",
-      "otherEntityRelationshipName": "drug",
-      "relationshipName": "deviceUsageIndication"
-    },
-    {
-      "relationshipType": "one-to-many",
       "otherEntityName": "drugBrand",
       "otherEntityRelationshipName": "drug",
       "relationshipName": "brands"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "deviceUsageIndication",
+      "otherEntityRelationshipName": "drug",
+      "relationshipName": "deviceUsageIndication",
+      "ownerSide": false
     }
   ],
   "entityTableName": "drug",

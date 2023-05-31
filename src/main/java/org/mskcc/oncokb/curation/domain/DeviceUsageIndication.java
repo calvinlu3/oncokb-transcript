@@ -2,6 +2,8 @@ package org.mskcc.oncokb.curation.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 
 /**
@@ -18,21 +20,31 @@ public class DeviceUsageIndication implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @ManyToMany
+    @JoinTable(
+        name = "rel_device_usage_indication__alteration",
+        joinColumns = @JoinColumn(name = "device_usage_indication_id"),
+        inverseJoinColumns = @JoinColumn(name = "alteration_id")
+    )
+    @JsonIgnoreProperties(value = { "referenceGenomes", "genes", "consequence", "deviceUsageIndications" }, allowSetters = true)
+    private Set<Alteration> alterations = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "rel_device_usage_indication__drug",
+        joinColumns = @JoinColumn(name = "device_usage_indication_id"),
+        inverseJoinColumns = @JoinColumn(name = "drug_id")
+    )
+    @JsonIgnoreProperties(value = { "fdaDrug", "synonyms", "brands", "deviceUsageIndications" }, allowSetters = true)
+    private Set<Drug> drugs = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "deviceUsageIndications", "companionDiagnosticDevice", "type" }, allowSetters = true)
     private FdaSubmission fdaSubmission;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "deviceUsageIndications", "gene", "consequence" }, allowSetters = true)
-    private Alteration alteration;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "children", "deviceUsageIndications", "parent" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "children", "deviceUsageIndications", "parent", "clinicalTrialsGovConditions" }, allowSetters = true)
     private CancerType cancerType;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "fdaDrug", "synonyms", "deviceUsageIndications", "brands" }, allowSetters = true)
-    private Drug drug;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -49,6 +61,56 @@ public class DeviceUsageIndication implements Serializable {
         this.id = id;
     }
 
+    public Set<Alteration> getAlterations() {
+        return this.alterations;
+    }
+
+    public void setAlterations(Set<Alteration> alterations) {
+        this.alterations = alterations;
+    }
+
+    public DeviceUsageIndication alterations(Set<Alteration> alterations) {
+        this.setAlterations(alterations);
+        return this;
+    }
+
+    public DeviceUsageIndication addAlteration(Alteration alteration) {
+        this.alterations.add(alteration);
+        alteration.getDeviceUsageIndications().add(this);
+        return this;
+    }
+
+    public DeviceUsageIndication removeAlteration(Alteration alteration) {
+        this.alterations.remove(alteration);
+        alteration.getDeviceUsageIndications().remove(this);
+        return this;
+    }
+
+    public Set<Drug> getDrugs() {
+        return this.drugs;
+    }
+
+    public void setDrugs(Set<Drug> drugs) {
+        this.drugs = drugs;
+    }
+
+    public DeviceUsageIndication drugs(Set<Drug> drugs) {
+        this.setDrugs(drugs);
+        return this;
+    }
+
+    public DeviceUsageIndication addDrug(Drug drug) {
+        this.drugs.add(drug);
+        drug.getDeviceUsageIndications().add(this);
+        return this;
+    }
+
+    public DeviceUsageIndication removeDrug(Drug drug) {
+        this.drugs.remove(drug);
+        drug.getDeviceUsageIndications().remove(this);
+        return this;
+    }
+
     public FdaSubmission getFdaSubmission() {
         return this.fdaSubmission;
     }
@@ -62,19 +124,6 @@ public class DeviceUsageIndication implements Serializable {
         return this;
     }
 
-    public Alteration getAlteration() {
-        return this.alteration;
-    }
-
-    public void setAlteration(Alteration alteration) {
-        this.alteration = alteration;
-    }
-
-    public DeviceUsageIndication alteration(Alteration alteration) {
-        this.setAlteration(alteration);
-        return this;
-    }
-
     public CancerType getCancerType() {
         return this.cancerType;
     }
@@ -85,19 +134,6 @@ public class DeviceUsageIndication implements Serializable {
 
     public DeviceUsageIndication cancerType(CancerType cancerType) {
         this.setCancerType(cancerType);
-        return this;
-    }
-
-    public Drug getDrug() {
-        return this.drug;
-    }
-
-    public void setDrug(Drug drug) {
-        this.drug = drug;
-    }
-
-    public DeviceUsageIndication drug(Drug drug) {
-        this.setDrug(drug);
         return this;
     }
 

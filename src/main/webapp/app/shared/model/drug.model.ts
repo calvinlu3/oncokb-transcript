@@ -1,7 +1,7 @@
 import { IFdaDrug } from 'app/shared/model/fda-drug.model';
 import { IDrugSynonym } from 'app/shared/model/drug-synonym.model';
-import { IDeviceUsageIndication } from 'app/shared/model/device-usage-indication.model';
 import { IDrugBrand } from 'app/shared/model/drug-brand.model';
+import { IDeviceUsageIndication } from 'app/shared/model/device-usage-indication.model';
 
 export interface IDrug {
   id?: number;
@@ -10,8 +10,8 @@ export interface IDrug {
   semanticType?: string | null;
   fdaDrug?: IFdaDrug | null;
   synonyms?: IDrugSynonym[] | null;
-  deviceUsageIndications?: IDeviceUsageIndication[] | null;
   brands?: IDrugBrand[] | null;
+  deviceUsageIndications?: IDeviceUsageIndication[] | null;
 }
 
 export const defaultValue: Readonly<IDrug> = {};

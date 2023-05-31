@@ -3,6 +3,20 @@
   "fields": [],
   "relationships": [
     {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "alteration",
+      "otherEntityRelationshipName": "deviceUsageIndication",
+      "relationshipName": "alteration",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "drug",
+      "otherEntityRelationshipName": "deviceUsageIndication",
+      "relationshipName": "drug",
+      "ownerSide": true
+    },
+    {
       "relationshipType": "many-to-one",
       "otherEntityName": "fdaSubmission",
       "otherEntityRelationshipName": "deviceUsageIndication",
@@ -10,21 +24,9 @@
     },
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "alteration",
-      "otherEntityRelationshipName": "deviceUsageIndication",
-      "relationshipName": "alteration"
-    },
-    {
-      "relationshipType": "many-to-one",
       "otherEntityName": "cancerType",
       "otherEntityRelationshipName": "deviceUsageIndication",
       "relationshipName": "cancerType"
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "drug",
-      "otherEntityRelationshipName": "deviceUsageIndication",
-      "relationshipName": "drug"
     }
   ],
   "entityTableName": "device_usage_indication",

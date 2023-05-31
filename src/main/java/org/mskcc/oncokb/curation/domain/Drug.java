@@ -41,13 +41,13 @@ public class Drug implements Serializable {
     @JsonIgnoreProperties(value = { "drug" }, allowSetters = true)
     private Set<DrugSynonym> synonyms = new HashSet<>();
 
-    @OneToMany(mappedBy = "drug")
-    @JsonIgnoreProperties(value = { "fdaSubmission", "alteration", "cancerType", "drug" }, allowSetters = true)
-    private Set<DeviceUsageIndication> deviceUsageIndications = new HashSet<>();
-
     @OneToMany(mappedBy = "drug", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "drug" }, allowSetters = true)
     private Set<DrugBrand> brands = new HashSet<>();
+
+    @ManyToMany(mappedBy = "drugs")
+    @JsonIgnoreProperties(value = { "alterations", "drugs", "fdaSubmission", "cancerType" }, allowSetters = true)
+    private Set<DeviceUsageIndication> deviceUsageIndications = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -147,37 +147,6 @@ public class Drug implements Serializable {
         return this;
     }
 
-    public Set<DeviceUsageIndication> getDeviceUsageIndications() {
-        return this.deviceUsageIndications;
-    }
-
-    public void setDeviceUsageIndications(Set<DeviceUsageIndication> deviceUsageIndications) {
-        if (this.deviceUsageIndications != null) {
-            this.deviceUsageIndications.forEach(i -> i.setDrug(null));
-        }
-        if (deviceUsageIndications != null) {
-            deviceUsageIndications.forEach(i -> i.setDrug(this));
-        }
-        this.deviceUsageIndications = deviceUsageIndications;
-    }
-
-    public Drug deviceUsageIndications(Set<DeviceUsageIndication> deviceUsageIndications) {
-        this.setDeviceUsageIndications(deviceUsageIndications);
-        return this;
-    }
-
-    public Drug addDeviceUsageIndication(DeviceUsageIndication deviceUsageIndication) {
-        this.deviceUsageIndications.add(deviceUsageIndication);
-        deviceUsageIndication.setDrug(this);
-        return this;
-    }
-
-    public Drug removeDeviceUsageIndication(DeviceUsageIndication deviceUsageIndication) {
-        this.deviceUsageIndications.remove(deviceUsageIndication);
-        deviceUsageIndication.setDrug(null);
-        return this;
-    }
-
     public Set<DrugBrand> getBrands() {
         return this.brands;
     }
@@ -206,6 +175,37 @@ public class Drug implements Serializable {
     public Drug removeBrands(DrugBrand drugBrand) {
         this.brands.remove(drugBrand);
         drugBrand.setDrug(null);
+        return this;
+    }
+
+    public Set<DeviceUsageIndication> getDeviceUsageIndications() {
+        return this.deviceUsageIndications;
+    }
+
+    public void setDeviceUsageIndications(Set<DeviceUsageIndication> deviceUsageIndications) {
+        if (this.deviceUsageIndications != null) {
+            this.deviceUsageIndications.forEach(i -> i.removeDrug(this));
+        }
+        if (deviceUsageIndications != null) {
+            deviceUsageIndications.forEach(i -> i.addDrug(this));
+        }
+        this.deviceUsageIndications = deviceUsageIndications;
+    }
+
+    public Drug deviceUsageIndications(Set<DeviceUsageIndication> deviceUsageIndications) {
+        this.setDeviceUsageIndications(deviceUsageIndications);
+        return this;
+    }
+
+    public Drug addDeviceUsageIndication(DeviceUsageIndication deviceUsageIndication) {
+        this.deviceUsageIndications.add(deviceUsageIndication);
+        deviceUsageIndication.getDrugs().add(this);
+        return this;
+    }
+
+    public Drug removeDeviceUsageIndication(DeviceUsageIndication deviceUsageIndication) {
+        this.deviceUsageIndications.remove(deviceUsageIndication);
+        deviceUsageIndication.getDrugs().remove(this);
         return this;
     }
 
