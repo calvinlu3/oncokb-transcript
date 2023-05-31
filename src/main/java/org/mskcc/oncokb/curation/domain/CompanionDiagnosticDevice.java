@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
  * A CompanionDiagnosticDevice.
  */
 @Entity
-@Table(name = "companion_diagnostic_device")
+@Table(name = "companion_diagnostic_device", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "manufacturer" }) })
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "companiondiagnosticdevice")
 public class CompanionDiagnosticDevice implements Serializable {
 

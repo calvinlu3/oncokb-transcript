@@ -1,7 +1,5 @@
 package org.mskcc.oncokb.curation.service;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -114,6 +112,11 @@ public class FdaDrugService {
     public Optional<FdaDrug> findOne(Long id) {
         log.debug("Request to get FdaDrug : {}", id);
         return fdaDrugRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<FdaDrug> findOneByApplicationNumber(String applicationNumber) {
+        return fdaDrugRepository.findFirstByApplicationNumber(applicationNumber);
     }
 
     /**

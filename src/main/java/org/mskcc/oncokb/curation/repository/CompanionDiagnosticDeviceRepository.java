@@ -29,4 +29,6 @@ public interface CompanionDiagnosticDeviceRepository extends JpaRepository<Compa
         "select companionDiagnosticDevice from CompanionDiagnosticDevice companionDiagnosticDevice left join fetch companionDiagnosticDevice.specimenTypes where companionDiagnosticDevice.id =:id"
     )
     Optional<CompanionDiagnosticDevice> findOneWithEagerRelationships(@Param("id") Long id);
+
+    List<CompanionDiagnosticDevice> findByNameIgnoreCaseAndManufacturerIgnoreCase(String name, String manufacturer);
 }

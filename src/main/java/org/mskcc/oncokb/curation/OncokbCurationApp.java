@@ -9,6 +9,7 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.mskcc.oncokb.curation.config.ApplicationProperties;
+import org.mskcc.oncokb.curation.importer.CdxImporter;
 import org.mskcc.oncokb.curation.importer.Importer;
 import org.oncokb.ApiException;
 import org.slf4j.Logger;
@@ -28,6 +29,9 @@ public class OncokbCurationApp {
 
     @Autowired
     private Importer importer;
+
+    @Autowired
+    CdxImporter cdxImporter;
 
     private static final Logger log = LoggerFactory.getLogger(OncokbCurationApp.class);
 
@@ -72,6 +76,16 @@ public class OncokbCurationApp {
         );
         if (activeProfiles.contains("importer")) {
             importer.generalImport();
+        }
+    }
+
+    @PostConstruct
+    public void importInitialCdxData() throws IOException {
+        Collection<String> activeProfiles = Arrays.asList(
+            env.getActiveProfiles().length == 0 ? env.getDefaultProfiles() : env.getActiveProfiles()
+        );
+        if (activeProfiles.contains("cdx-importer")) {
+            cdxImporter.importMain();
         }
     }
 

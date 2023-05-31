@@ -124,6 +124,18 @@ public class AlterationService {
         return alterationRepository.findByGenesId(geneId);
     }
 
+    public Optional<Alteration> findOneByGeneIdAndAlterationName(Long geneId, String alterationName) {
+        Optional<Alteration> optionalAlteration = Optional.empty();
+        List<Alteration> alterations = findByGeneId(geneId);
+        for (Alteration alteration : alterations) {
+            if (alteration.getName().equalsIgnoreCase(alterationName)) {
+                optionalAlteration = Optional.of(alteration);
+                break;
+            }
+        }
+        return optionalAlteration;
+    }
+
     /**
      * Delete the alteration by id.
      *

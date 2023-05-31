@@ -103,6 +103,11 @@ public class CancerTypeService {
         return cancerTypeRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<CancerType> findOneByCode(String code) {
+        return cancerTypeRepository.findOneByCodeIgnoreCase(code);
+    }
+
     /**
      * Delete the cancerType by id.
      *

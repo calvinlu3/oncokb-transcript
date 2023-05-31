@@ -117,6 +117,11 @@ public class CompanionDiagnosticDeviceService {
         return companionDiagnosticDeviceRepository.findOneWithEagerRelationships(id);
     }
 
+    @Transactional(readOnly = true)
+    public List<CompanionDiagnosticDevice> findByNameAndManufacturer(String name, String manufacturer) {
+        return companionDiagnosticDeviceRepository.findByNameIgnoreCaseAndManufacturerIgnoreCase(name, manufacturer);
+    }
+
     /**
      * Delete the companionDiagnosticDevice by id.
      *

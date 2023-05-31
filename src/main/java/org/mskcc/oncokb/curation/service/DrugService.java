@@ -1,7 +1,5 @@
 package org.mskcc.oncokb.curation.service;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -105,6 +103,10 @@ public class DrugService {
 
     public Optional<Drug> findByCode(String code) {
         return drugRepository.findOneByCode(code);
+    }
+
+    public Optional<Drug> findByName(String name) {
+        return drugRepository.findOneByName(name);
     }
 
     public List<Drug> searchDrug(String query) {
