@@ -16,15 +16,14 @@ import org.mskcc.oncokb.curation.domain.CancerType;
 import org.mskcc.oncokb.curation.domain.CompanionDiagnosticDevice;
 import org.mskcc.oncokb.curation.domain.DeviceUsageIndication;
 import org.mskcc.oncokb.curation.domain.Drug;
-import org.mskcc.oncokb.curation.domain.FdaDrug;
 import org.mskcc.oncokb.curation.domain.FdaSubmission;
 import org.mskcc.oncokb.curation.domain.Gene;
 import org.mskcc.oncokb.curation.domain.SpecimenType;
 import org.mskcc.oncokb.curation.service.AlterationService;
 import org.mskcc.oncokb.curation.service.CancerTypeService;
 import org.mskcc.oncokb.curation.service.CompanionDiagnosticDeviceService;
+import org.mskcc.oncokb.curation.service.DeviceUsageIndicationService;
 import org.mskcc.oncokb.curation.service.DrugService;
-import org.mskcc.oncokb.curation.service.FdaDrugService;
 import org.mskcc.oncokb.curation.service.FdaSubmissionService;
 import org.mskcc.oncokb.curation.service.GeneService;
 import org.mskcc.oncokb.curation.service.SpecimenTypeService;
@@ -39,6 +38,9 @@ public class CdxImporter {
 
     @Autowired
     private CdxUtils cdxUtils;
+
+    @Autowired
+    private DeviceUsageIndicationService deviceUsageIndicationService;
 
     @Autowired
     private CompanionDiagnosticDeviceService companionDiagnosticDeviceService;
@@ -61,19 +63,15 @@ public class CdxImporter {
     @Autowired
     private DrugService drugService;
 
-    @Autowired
-    private FdaDrugService fdaDrugService;
-
     private final Logger log = LoggerFactory.getLogger(Importer.class);
 
-    public void importMain() throws IOException {
+    public void importCdxMain() throws IOException {
         List<List<String>> parsedCdxContent = readInitialCdxFile();
         if (parsedCdxContent == null) {
             return;
         }
 
         List<String> headers = parsedCdxContent.get(0);
-        List<DeviceUsageIndication> deviceUsageIndications = new ArrayList<>();
 
         for (int i = 0; i < parsedCdxContent.size(); i++) {
             if (i == 0) {
@@ -84,7 +82,6 @@ public class CdxImporter {
             CompanionDiagnosticDevice cdx = null;
             FdaSubmission fdaSubmission = null;
             List<Drug> drugs = new ArrayList<>();
-            // List<FdaDrug> fdaDrugs = new ArrayList<>();
             Gene gene = null;
             List<Alteration> alterations = new ArrayList<>();
             CancerType cancerType = null;
@@ -92,157 +89,161 @@ public class CdxImporter {
             // Parse row
             for (int colIndex = 0; colIndex < row.size(); colIndex++) {
                 String columnValue = row.get(colIndex).trim();
-                Pattern pattern = null;
-                Matcher matcher = null;
-                Boolean shouldSkipRow = true;
-                switch (colIndex) {
-                    case 0:
-                        pattern = Pattern.compile("^(.*)\\((.*?)\\)");
-                        matcher = pattern.matcher(columnValue);
-                        if (matcher.find() && matcher.groupCount() == 2) {
-                            String cdxName = matcher.group(1);
-                            String cdxManufacturer = matcher.group(2);
-                            cdx =
-                                companionDiagnosticDeviceService
-                                    .findByNameAndManufacturer(cdxName, cdxManufacturer)
-                                    .stream()
-                                    .findFirst()
-                                    .orElse(new CompanionDiagnosticDevice());
-                            cdx.setName(cdxName);
-                            cdx.setManufacturer(cdxManufacturer);
-                        } else {
-                            log.error("Could not parse header '{}' with value '{}'", headers.get(colIndex), row.get(colIndex));
-                            shouldSkipRow = true;
-                        }
-                        break;
-                    // case 2:
-                    //     String[] fdaDrugStrings = { columnValue };
-                    //     if (columnValue.contains("+")) {    // Combination drug
-                    //         fdaDrugStrings = columnValue.split("+");
-                    //     }
-                    //     for (String fdaDrugString: fdaDrugStrings) {
-                    //         pattern = Pattern.compile("^(.*)\\((.*?)\\)(.*)");
-                    //         matcher = pattern.matcher(columnValue);
-                    //         if (matcher.find() && matcher.groupCount() == 2) {
-                    //             String brandName = matcher.group(1).trim();
-                    //             String genericName = matcher.group(2).trim();
-                    //             String applicationNumber = matcher.group(3).replaceAll("\\s", "");
-                    //             FdaDrug fdaDrug = fdaDrugService.findOneByApplicationNumber(applicationNumber).orElse(new FdaDrug());
-                    //             fdaDrug.setBrandName(brandName);
-                    //             fdaDrug.setGenericName(genericName);
-                    //             fdaDrug.setApplicationNumber(applicationNumber);
-                    //             fdaDrugs.add(fdaDrug);
-                    //         } else {
-                    //             log.error("Could not parse header '{}' with value '{}'", headers.get(colIndex), row.get(colIndex));
-                    //             shouldSkipRow = true;
-                    //             break;
-                    //         }
-                    //     }
-                    //     break;
-                    case 6:
-                        pattern = Pattern.compile("^([A-Za-z\\d]+)\\/([A-Za-z\\d]+)");
-                        matcher = pattern.matcher(columnValue);
-                        if (matcher.find() && matcher.groupCount() == 2) {
-                            String number = matcher.group(1);
-                            String supplementNumber = matcher.group(2);
-                            fdaSubmission =
-                                fdaSubmissionService.findByNumberAndSupplementNumber(number, supplementNumber).orElse(new FdaSubmission());
-                            fdaSubmission.setNumber(number);
-                            fdaSubmission.setSupplementNumber(supplementNumber);
-                        }
-                        break;
-                    case 7:
-                        Instant fdaSubmissionDate = cdxUtils.convertDateToInstant(columnValue);
-                        if (fdaSubmission != null) {
-                            fdaSubmission.setDecisionDate(fdaSubmissionDate);
-                        }
-                        break;
-                    case 8:
-                        if (cdx != null) {
-                            cdx.setIndicationDetails(columnValue);
-                        }
-                        break;
-                    case 9:
-                        Optional<CancerType> optionalCancerType = cancerTypeService.findOneByCode(columnValue);
-                        if (optionalCancerType.isPresent()) {
-                            cancerType = optionalCancerType.get();
-                        } else {
-                            shouldSkipRow = true;
-                            log.error("Cannot find cancer type with code '{}'", columnValue);
-                        }
-                        break;
-                    case 10:
-                        String[] drugStrings = { columnValue };
-                        if (columnValue.contains("+")) { // Combination drug
-                            drugStrings = columnValue.split("+");
-                        }
-                        for (String drugString : drugStrings) {
-                            drugString = drugString.trim();
-                            Drug drug = drugService.findByName(drugString).orElse(null);
-                            if (drug == null) {
-                                log.error("Could not find drug '{}'", drugString);
-                                shouldSkipRow = true;
-                                break;
-                            }
-                            drugs.add(drug);
-                        }
-                        break;
-                    case 11:
-                        Optional<Gene> optionalGene = geneService.findGeneByHugoSymbol(columnValue);
-                        if (optionalGene.isPresent()) {
-                            gene = optionalGene.get();
-                        } else {
-                            shouldSkipRow = true;
-                            log.error("Cannot find gene '{}'", columnValue);
-                        }
-                        break;
-                    case 12:
-                        if (gene == null || gene.getId() == null) {
-                            shouldSkipRow = true;
+                try {
+                    switch (colIndex) {
+                        case 0:
+                            cdx = parseCdxNameColumn(columnValue);
                             break;
-                        }
-                        Long geneId = gene.getId();
-                        String[] alterationStrings = { columnValue };
-                        if (columnValue.contains(",")) {
-                            alterationStrings = columnValue.split(",");
-                        }
-                        for (String alterationString : alterationStrings) {
-                            alterationString = alterationString.trim();
-                            Optional<Alteration> optionalAlteration = alterationService.findOneByGeneIdAndAlterationName(
-                                geneId,
-                                alterationString
-                            );
-                            if (optionalAlteration.isPresent()) {
-                                alterations.add(optionalAlteration.get());
+                        case 6:
+                            fdaSubmission = parseFdaSubmissionColumn(columnValue);
+                            break;
+                        case 7:
+                            Instant fdaSubmissionDate = cdxUtils.convertDateToInstant(columnValue);
+                            fdaSubmission.setDecisionDate(fdaSubmissionDate);
+                            break;
+                        case 8:
+                            cdx.setIndicationDetails(columnValue);
+                            break;
+                        case 9:
+                            cancerType = parseCancerTypeColumn(columnValue);
+                            break;
+                        case 10:
+                            drugs = parseDrugColumn(columnValue);
+                            break;
+                        case 11:
+                            Optional<Gene> optionalGene = geneService.findGeneByHugoSymbol(columnValue);
+                            if (optionalGene.isPresent()) {
+                                gene = optionalGene.get();
                             } else {
-                                shouldSkipRow = true;
-                                log.error("Cannot find alteration '{}' for gene '{}'", alterationString, gene.getHugoSymbol());
-                                break;
+                                throw new IllegalArgumentException("Could not find gene " + columnValue);
                             }
-                        }
-                        break;
-                    case 13:
-                        Optional<SpecimenType> optionalSpecimenType = specimenTypeService.findOneByType(columnValue);
-                        if (optionalSpecimenType.isPresent() && cdx != null) {
-                            cdx.addSpecimenType(optionalSpecimenType.get());
-                        }
-                    default:
-                        break;
-                }
-
-                if (shouldSkipRow) {
-                    log.error("Error processing row {}. Skipping...", i);
+                            break;
+                        case 12:
+                            alterations = parseAlterationColumn(columnValue, gene);
+                            break;
+                        case 13:
+                            Optional<SpecimenType> optionalSpecimenType = specimenTypeService.findOneByType(columnValue);
+                            if (optionalSpecimenType.isPresent()) {
+                                cdx.addSpecimenType(optionalSpecimenType.get());
+                            }
+                        default:
+                            break;
+                    }
+                } catch (IllegalArgumentException e) {
+                    String message = e.getMessage();
+                    if (e.getMessage() == null) {
+                        message = String.format("Cannot parse column '{}' with value '{}'", headers.get(colIndex), columnValue);
+                    }
+                    log.error(message);
+                    log.error("Issue processing row {}, skipping...", i);
                     break;
                 }
             }
 
-            // Create DeviceUsageIndication
-            DeviceUsageIndication deviceUsageIndication = new DeviceUsageIndication();
-            deviceUsageIndication.setCancerType(cancerType);
-            deviceUsageIndication.setFdaSubmission(fdaSubmission);
-            // Todo: set other fields after updating entity relationships
-            deviceUsageIndications.add(deviceUsageIndication);
+            saveCdxInformation(cdx, fdaSubmission, cancerType, drugs, alterations);
+            log.info("Successfully imported row {}", i);
+            break;
         }
+    }
+
+    private void saveCdxInformation(
+        CompanionDiagnosticDevice cdx,
+        FdaSubmission fdaSubmission,
+        CancerType cancerType,
+        List<Drug> drugs,
+        List<Alteration> alterations
+    ) {
+        fdaSubmissionService.save(fdaSubmission);
+        cdx.addFdaSubmission(fdaSubmission);
+        companionDiagnosticDeviceService.save(cdx);
+
+        // Create DeviceUsageIndication
+        DeviceUsageIndication deviceUsageIndication = new DeviceUsageIndication();
+        deviceUsageIndication.setCancerType(cancerType);
+        deviceUsageIndication.setFdaSubmission(fdaSubmission);
+        drugs.stream().forEach(drug -> deviceUsageIndication.addDrug(drug));
+        alterations.stream().forEach(alteration -> deviceUsageIndication.addAlteration(alteration));
+        deviceUsageIndicationService.save(deviceUsageIndication);
+    }
+
+    private CompanionDiagnosticDevice parseCdxNameColumn(String columnValue) throws IllegalArgumentException {
+        Pattern pattern = Pattern.compile("^(.*)\\((.*?)\\)");
+        Matcher matcher = pattern.matcher(columnValue);
+        if (matcher.find() && matcher.group(1) != null && matcher.group(2) != null) {
+            String cdxName = matcher.group(1);
+            String cdxManufacturer = matcher.group(2);
+            CompanionDiagnosticDevice cdx = companionDiagnosticDeviceService
+                .findByNameAndManufacturer(cdxName, cdxManufacturer)
+                .stream()
+                .findFirst()
+                .orElse(new CompanionDiagnosticDevice());
+            cdx.setName(cdxName);
+            cdx.setManufacturer(cdxManufacturer);
+            return cdx;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private FdaSubmission parseFdaSubmissionColumn(String columnValue) throws IllegalArgumentException {
+        Pattern pattern = Pattern.compile("^([A-Za-z\\d]+)(\\/([A-Za-z\\d]+))?");
+        Matcher matcher = pattern.matcher(columnValue);
+        if (matcher.find() && matcher.group(1) != null) {
+            String number = matcher.group(1);
+            String supplementNumber = Optional.ofNullable(matcher.group(3)).orElse("");
+            FdaSubmission fdaSubmission = fdaSubmissionService
+                .findByNumberAndSupplementNumber(number, supplementNumber)
+                .orElse(new FdaSubmission());
+            fdaSubmission.setNumber(number);
+            fdaSubmission.setSupplementNumber(supplementNumber);
+            return fdaSubmission;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private CancerType parseCancerTypeColumn(String columnValue) throws IllegalArgumentException {
+        return cancerTypeService.findOneByCode(columnValue).orElseThrow(IllegalArgumentException::new);
+    }
+
+    private List<Drug> parseDrugColumn(String columnValue) throws IllegalArgumentException {
+        List<Drug> drugs = new ArrayList<>();
+        String[] drugStrings = { columnValue };
+        if (columnValue.contains("+")) { // Combination drug
+            drugStrings = columnValue.split("+");
+        }
+        for (String drugString : drugStrings) {
+            drugString = drugString.trim();
+            Drug drug = drugService.findByName(drugString).orElse(null);
+            if (drug != null) {
+                drugs.add(drug);
+            } else {
+                throw new IllegalArgumentException("Could not find drug " + drugString);
+            }
+        }
+        return drugs;
+    }
+
+    private List<Alteration> parseAlterationColumn(String columnValue, Gene gene) throws IllegalArgumentException {
+        if (gene == null || gene.getId() == null) {
+            throw new IllegalArgumentException();
+        }
+        List<Alteration> alterations = new ArrayList<>();
+        Long geneId = gene.getId();
+        String[] alterationStrings = { columnValue };
+        if (columnValue.contains(",")) {
+            alterationStrings = columnValue.split(",");
+        }
+        for (String alterationString : alterationStrings) {
+            alterationString = alterationString.trim();
+            Optional<Alteration> optionalAlteration = alterationService.findOneByGeneIdAndAlterationName(geneId, alterationString);
+            if (optionalAlteration.isPresent()) {
+                alterations.add(optionalAlteration.get());
+            } else {
+                throw new IllegalArgumentException("Cannot find alteration " + alterationString + " for gene " + gene.getHugoSymbol());
+            }
+        }
+        return alterations;
     }
 
     private List<List<String>> readInitialCdxFile() throws IOException {

@@ -45,7 +45,7 @@ public class Drug implements Serializable {
     @JsonIgnoreProperties(value = { "drug" }, allowSetters = true)
     private Set<DrugBrand> brands = new HashSet<>();
 
-    @ManyToMany(mappedBy = "drugs")
+    @ManyToMany(mappedBy = "drugs", fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "alterations", "drugs", "fdaSubmission", "cancerType" }, allowSetters = true)
     private Set<DeviceUsageIndication> deviceUsageIndications = new HashSet<>();
 

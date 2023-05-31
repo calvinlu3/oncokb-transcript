@@ -37,7 +37,7 @@ public class CompanionDiagnosticDevice implements Serializable {
     @JsonIgnoreProperties(value = { "companionDiagnosticDevice" }, allowSetters = true)
     private Set<FdaSubmission> fdaSubmissions = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_companion_diagnostic_device__specimen_type",
         joinColumns = @JoinColumn(name = "companion_diagnostic_device_id"),

@@ -59,7 +59,7 @@ public class Alteration implements Serializable {
     @JsonIgnoreProperties(value = { "alterations" }, allowSetters = true)
     private Consequence consequence;
 
-    @ManyToMany(mappedBy = "alterations")
+    @ManyToMany(mappedBy = "alterations", fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "alterations", "drugs", "fdaSubmission", "cancerType" }, allowSetters = true)
     private Set<DeviceUsageIndication> deviceUsageIndications = new HashSet<>();
 

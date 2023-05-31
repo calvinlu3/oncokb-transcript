@@ -16,6 +16,7 @@ import { SaveButton } from 'app/shared/button/SaveButton';
 import GeneSelect from 'app/shared/select/GeneSelect';
 import AlterationSelect from 'app/shared/select/AlterationSelect';
 import DrugSelect from 'app/shared/select/DrugSelect';
+import { getAlterationName, getTreatmentName } from 'app/shared/util/utils';
 
 const SidebarMenuItem: React.FunctionComponent<{ style?: React.CSSProperties }> = ({ style, children }) => {
   return <div style={{ padding: '8px 24px 0 24px', ...style }}>{children}</div>;
@@ -133,9 +134,10 @@ const FdaSubmissionPanel: React.FunctionComponent<StoreProps> = props => {
                   }}
                 >
                   <div>
-                    <div>{`${indication.alteration.genes[0].hugoSymbol}/${indication.alteration.name}`}</div>
+                    <div>Gene: {indication.alterations[0].genes[0].hugoSymbol}</div>
+                    <div>Alteration: {getAlterationName(indication.alterations)}</div>
                     <div>Cancer Type: {indication.cancerType.mainType}</div>
-                    <div>Drug: {indication.drug.name}</div>
+                    <div>Drug(s): {getTreatmentName(indication.drugs)}</div>
                   </div>
                   <div>
                     <Button

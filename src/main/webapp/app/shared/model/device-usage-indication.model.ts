@@ -6,9 +6,9 @@ import { IDrug } from 'app/shared/model/drug.model';
 export interface IDeviceUsageIndication {
   id?: number;
   fdaSubmission?: IFdaSubmission | null;
-  alteration?: IAlteration | null;
+  alterations?: IAlteration[] | null;
   cancerType?: ICancerType | null;
-  drug?: IDrug | null;
+  drugs?: IDrug[] | null;
 }
 
 export const defaultValue: Readonly<IDeviceUsageIndication> = {};

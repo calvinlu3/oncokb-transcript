@@ -85,7 +85,7 @@ public class OncokbCurationApp {
             env.getActiveProfiles().length == 0 ? env.getDefaultProfiles() : env.getActiveProfiles()
         );
         if (activeProfiles.contains("cdx-importer")) {
-            cdxImporter.importMain();
+            cdxImporter.importCdxMain();
         }
     }
 

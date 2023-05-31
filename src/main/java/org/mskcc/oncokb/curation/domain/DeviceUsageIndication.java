@@ -20,22 +20,22 @@ public class DeviceUsageIndication implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_device_usage_indication__alteration",
         joinColumns = @JoinColumn(name = "device_usage_indication_id"),
         inverseJoinColumns = @JoinColumn(name = "alteration_id")
     )
-    @JsonIgnoreProperties(value = { "referenceGenomes", "genes", "consequence", "deviceUsageIndications" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "deviceUsageIndications" }, allowSetters = true)
     private Set<Alteration> alterations = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_device_usage_indication__drug",
         joinColumns = @JoinColumn(name = "device_usage_indication_id"),
         inverseJoinColumns = @JoinColumn(name = "drug_id")
     )
-    @JsonIgnoreProperties(value = { "fdaDrug", "synonyms", "brands", "deviceUsageIndications" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "fdaDrug", "synonyms", "deviceUsageIndications" }, allowSetters = true)
     private Set<Drug> drugs = new HashSet<>();
 
     @ManyToOne
