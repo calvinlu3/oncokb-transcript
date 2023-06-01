@@ -17,6 +17,7 @@ import GeneSelect from 'app/shared/select/GeneSelect';
 import AlterationSelect from 'app/shared/select/AlterationSelect';
 import DrugSelect from 'app/shared/select/DrugSelect';
 import { getAlterationName, getTreatmentName } from 'app/shared/util/utils';
+import { DeviceUsageIndicationDTO } from 'app/shared/api/generated';
 
 const SidebarMenuItem: React.FunctionComponent<{ style?: React.CSSProperties }> = ({ style, children }) => {
   return <div style={{ padding: '8px 24px 0 24px', ...style }}>{children}</div>;
@@ -52,12 +53,13 @@ const FdaSubmissionPanel: React.FunctionComponent<StoreProps> = props => {
   }, [id]);
 
   const createDeviceUsageIndication = (e: any) => {
+    /* eslint-disable no-console */
     e.preventDefault();
-    const deviceUsageIndicationDTO = {
+    const deviceUsageIndicationDTO: DeviceUsageIndicationDTO = {
       fdaSubmission: id,
-      alteration: alterationValue.value as number,
+      alterations: alterationValue.map(alteration => alteration.value),
       cancerType: cancerTypeValue.value as number,
-      drug: drugValue.value as number,
+      drugs: drugValue.map(drug => drug.value),
     };
     deviceUsageIndicationClient
       .createDeviceUsageIndication(deviceUsageIndicationDTO)
@@ -94,7 +96,7 @@ const FdaSubmissionPanel: React.FunctionComponent<StoreProps> = props => {
           <SidebarMenuItem>
             <div style={{ display: 'flex' }}>
               <div style={{ flex: 1 }}>
-                <AlterationSelect geneId={selectedGeneId} onChange={onAlterationChange} />
+                <AlterationSelect isMulti geneId={selectedGeneId} onChange={onAlterationChange} />
               </div>
               <DefaultTooltip overlay={'Create new alteration'}>
                 <Button color="primary" onClick={redirectToCreateAlteration}>
@@ -107,7 +109,7 @@ const FdaSubmissionPanel: React.FunctionComponent<StoreProps> = props => {
             <CancerTypeSelect onChange={onCancerTypeChange} />
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <DrugSelect onChange={onDrugChange} />
+            <DrugSelect isMulti onChange={onDrugChange} />
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SaveButton />

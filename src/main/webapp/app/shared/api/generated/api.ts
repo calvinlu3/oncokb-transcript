@@ -160,6 +160,18 @@ export interface Alteration {
    * @memberof Alteration
    */
   genes?: Set<Gene>;
+  /**
+   *
+   * @type {Consequence}
+   * @memberof Alteration
+   */
+  consequence?: Consequence;
+  /**
+   *
+   * @type {Set<DeviceUsageIndication>}
+   * @memberof Alteration
+   */
+  deviceUsageIndications?: Set<DeviceUsageIndication>;
 }
 /**
  *
@@ -400,6 +412,31 @@ export type CategoricalAlterationAlterationTypeEnum =
 /**
  *
  * @export
+ * @interface ClinicalTrialsGovCondition
+ */
+export interface ClinicalTrialsGovCondition {
+  /**
+   *
+   * @type {number}
+   * @memberof ClinicalTrialsGovCondition
+   */
+  id?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof ClinicalTrialsGovCondition
+   */
+  name: string;
+  /**
+   *
+   * @type {Set<CancerType>}
+   * @memberof ClinicalTrialsGovCondition
+   */
+  cancerTypes?: Set<CancerType>;
+}
+/**
+ *
+ * @export
  * @interface CompanionDiagnosticDevice
  */
 export interface CompanionDiagnosticDevice {
@@ -421,6 +458,12 @@ export interface CompanionDiagnosticDevice {
    * @memberof CompanionDiagnosticDevice
    */
   manufacturer: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CompanionDiagnosticDevice
+   */
+  indicationDetails?: string;
   /**
    *
    * @type {Set<FdaSubmission>}
@@ -476,12 +519,6 @@ export interface Consequence {
    * @memberof Consequence
    */
   description?: string;
-  /**
-   *
-   * @type {Set<Alteration>}
-   * @memberof Consequence
-   */
-  alterations?: Set<Alteration>;
 }
 
 export const ConsequenceTypeEnum = {
@@ -508,28 +545,28 @@ export interface DeviceUsageIndication {
   id?: number;
   /**
    *
+   * @type {Set<Alteration>}
+   * @memberof DeviceUsageIndication
+   */
+  alterations?: Set<Alteration>;
+  /**
+   *
+   * @type {Set<Drug>}
+   * @memberof DeviceUsageIndication
+   */
+  drugs?: Set<Drug>;
+  /**
+   *
    * @type {FdaSubmission}
    * @memberof DeviceUsageIndication
    */
   fdaSubmission?: FdaSubmission;
   /**
    *
-   * @type {Alteration}
-   * @memberof DeviceUsageIndication
-   */
-  alteration?: Alteration;
-  /**
-   *
    * @type {CancerType}
    * @memberof DeviceUsageIndication
    */
   cancerType?: CancerType;
-  /**
-   *
-   * @type {Drug}
-   * @memberof DeviceUsageIndication
-   */
-  drug?: Drug;
 }
 /**
  *
@@ -545,6 +582,18 @@ export interface DeviceUsageIndicationDTO {
   id?: number;
   /**
    *
+   * @type {Set<number>}
+   * @memberof DeviceUsageIndicationDTO
+   */
+  alterations?: Set<number>;
+  /**
+   *
+   * @type {Set<number>}
+   * @memberof DeviceUsageIndicationDTO
+   */
+  drugs?: Set<number>;
+  /**
+   *
    * @type {number}
    * @memberof DeviceUsageIndicationDTO
    */
@@ -554,19 +603,7 @@ export interface DeviceUsageIndicationDTO {
    * @type {number}
    * @memberof DeviceUsageIndicationDTO
    */
-  alteration?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof DeviceUsageIndicationDTO
-   */
   cancerType?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof DeviceUsageIndicationDTO
-   */
-  drug?: number;
 }
 /**
  *
@@ -600,10 +637,28 @@ export interface Drug {
   semanticType?: string;
   /**
    *
+   * @type {FdaDrug}
+   * @memberof Drug
+   */
+  fdaDrug?: FdaDrug;
+  /**
+   *
+   * @type {Set<DrugSynonym>}
+   * @memberof Drug
+   */
+  synonyms?: Set<DrugSynonym>;
+  /**
+   *
    * @type {Set<DrugBrand>}
    * @memberof Drug
    */
   brands?: Set<DrugBrand>;
+  /**
+   *
+   * @type {Set<DeviceUsageIndication>}
+   * @memberof Drug
+   */
+  deviceUsageIndications?: Set<DeviceUsageIndication>;
 }
 /**
  *
@@ -888,6 +943,37 @@ export interface Explanation {
 /**
  *
  * @export
+ * @interface FdaDrug
+ */
+export interface FdaDrug {
+  /**
+   *
+   * @type {number}
+   * @memberof FdaDrug
+   */
+  id?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof FdaDrug
+   */
+  applicationNumber: string;
+  /**
+   *
+   * @type {string}
+   * @memberof FdaDrug
+   */
+  brandName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof FdaDrug
+   */
+  genericName?: string;
+}
+/**
+ *
+ * @export
  * @interface FdaSubmission
  */
 export interface FdaSubmission {
@@ -941,6 +1027,12 @@ export interface FdaSubmission {
   description?: string;
   /**
    *
+   * @type {string}
+   * @memberof FdaSubmission
+   */
+  platform?: string;
+  /**
+   *
    * @type {boolean}
    * @memberof FdaSubmission
    */
@@ -953,6 +1045,12 @@ export interface FdaSubmission {
   genetic: boolean;
   /**
    *
+   * @type {string}
+   * @memberof FdaSubmission
+   */
+  additionalInfo?: string;
+  /**
+   *
    * @type {Set<DeviceUsageIndication>}
    * @memberof FdaSubmission
    */
@@ -962,13 +1060,13 @@ export interface FdaSubmission {
    * @type {CompanionDiagnosticDevice}
    * @memberof FdaSubmission
    */
-  companionDiagnosticDevice: CompanionDiagnosticDevice;
+  companionDiagnosticDevice?: CompanionDiagnosticDevice;
   /**
    *
    * @type {FdaSubmissionType}
    * @memberof FdaSubmission
    */
-  type: FdaSubmissionType;
+  type?: FdaSubmissionType;
 }
 /**
  *
@@ -1781,6 +1879,12 @@ export interface SearchHitObject {
 export interface SearchHitsObject {
   /**
    *
+   * @type {Aggregations}
+   * @memberof SearchHitsObject
+   */
+  aggregations?: Aggregations;
+  /**
+   *
    * @type {Array<SearchHitObject>}
    * @memberof SearchHitsObject
    */
@@ -1793,22 +1897,16 @@ export interface SearchHitsObject {
   totalHits?: number;
   /**
    *
-   * @type {number}
-   * @memberof SearchHitsObject
-   */
-  maxScore?: number;
-  /**
-   *
    * @type {string}
    * @memberof SearchHitsObject
    */
   totalHitsRelation?: SearchHitsObjectTotalHitsRelationEnum;
   /**
    *
-   * @type {Aggregations}
+   * @type {number}
    * @memberof SearchHitsObject
    */
-  aggregations?: Aggregations;
+  maxScore?: number;
   /**
    *
    * @type {boolean}
@@ -4875,6 +4973,601 @@ export class CategoricalAlterationResourceApi extends BaseAPI {
   public updateCategoricalAlteration(id: number, categoricalAlteration: CategoricalAlteration, options?: AxiosRequestConfig) {
     return CategoricalAlterationResourceApiFp(this.configuration)
       .updateCategoricalAlteration(id, categoricalAlteration, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+}
+
+/**
+ * ClinicalTrialsGovConditionResourceApi - axios parameter creator
+ * @export
+ */
+export const ClinicalTrialsGovConditionResourceApiAxiosParamCreator = function (configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createClinicalTrialsGovCondition: async (
+      clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'clinicalTrialsGovCondition' is not null or undefined
+      assertParamExists('createClinicalTrialsGovCondition', 'clinicalTrialsGovCondition', clinicalTrialsGovCondition);
+      const localVarPath = `/api/clinical-trials-gov-conditions`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(clinicalTrialsGovCondition, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteClinicalTrialsGovCondition: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('deleteClinicalTrialsGovCondition', 'id', id);
+      const localVarPath = `/api/clinical-trials-gov-conditions/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {Pageable} pageable
+     * @param {boolean} [eagerload]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAllClinicalTrialsGovConditions: async (
+      pageable: Pageable,
+      eagerload?: boolean,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'pageable' is not null or undefined
+      assertParamExists('getAllClinicalTrialsGovConditions', 'pageable', pageable);
+      const localVarPath = `/api/clinical-trials-gov-conditions`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (pageable !== undefined) {
+        localVarQueryParameter['pageable'] = pageable;
+      }
+
+      if (eagerload !== undefined) {
+        localVarQueryParameter['eagerload'] = eagerload;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getClinicalTrialsGovCondition: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('getClinicalTrialsGovCondition', 'id', id);
+      const localVarPath = `/api/clinical-trials-gov-conditions/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    partialUpdateClinicalTrialsGovCondition: async (
+      id: number,
+      clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('partialUpdateClinicalTrialsGovCondition', 'id', id);
+      // verify required parameter 'clinicalTrialsGovCondition' is not null or undefined
+      assertParamExists('partialUpdateClinicalTrialsGovCondition', 'clinicalTrialsGovCondition', clinicalTrialsGovCondition);
+      const localVarPath = `/api/clinical-trials-gov-conditions/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(clinicalTrialsGovCondition, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {string} query
+     * @param {Pageable} pageable
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    searchClinicalTrialsGovConditions: async (
+      query: string,
+      pageable: Pageable,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'query' is not null or undefined
+      assertParamExists('searchClinicalTrialsGovConditions', 'query', query);
+      // verify required parameter 'pageable' is not null or undefined
+      assertParamExists('searchClinicalTrialsGovConditions', 'pageable', pageable);
+      const localVarPath = `/api/_search/clinical-trials-gov-conditions`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (pageable !== undefined) {
+        localVarQueryParameter['pageable'] = pageable;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateClinicalTrialsGovCondition: async (
+      id: number,
+      clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('updateClinicalTrialsGovCondition', 'id', id);
+      // verify required parameter 'clinicalTrialsGovCondition' is not null or undefined
+      assertParamExists('updateClinicalTrialsGovCondition', 'clinicalTrialsGovCondition', clinicalTrialsGovCondition);
+      const localVarPath = `/api/clinical-trials-gov-conditions/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(clinicalTrialsGovCondition, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
+};
+
+/**
+ * ClinicalTrialsGovConditionResourceApi - functional programming interface
+ * @export
+ */
+export const ClinicalTrialsGovConditionResourceApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = ClinicalTrialsGovConditionResourceApiAxiosParamCreator(configuration);
+  return {
+    /**
+     *
+     * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async createClinicalTrialsGovCondition(
+      clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ClinicalTrialsGovCondition>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.createClinicalTrialsGovCondition(clinicalTrialsGovCondition, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async deleteClinicalTrialsGovCondition(
+      id: number,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deleteClinicalTrialsGovCondition(id, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {Pageable} pageable
+     * @param {boolean} [eagerload]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getAllClinicalTrialsGovConditions(
+      pageable: Pageable,
+      eagerload?: boolean,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ClinicalTrialsGovCondition>>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getAllClinicalTrialsGovConditions(pageable, eagerload, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getClinicalTrialsGovCondition(
+      id: number,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ClinicalTrialsGovCondition>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getClinicalTrialsGovCondition(id, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async partialUpdateClinicalTrialsGovCondition(
+      id: number,
+      clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ClinicalTrialsGovCondition>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.partialUpdateClinicalTrialsGovCondition(
+        id,
+        clinicalTrialsGovCondition,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {string} query
+     * @param {Pageable} pageable
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async searchClinicalTrialsGovConditions(
+      query: string,
+      pageable: Pageable,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ClinicalTrialsGovCondition>>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.searchClinicalTrialsGovConditions(query, pageable, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async updateClinicalTrialsGovCondition(
+      id: number,
+      clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ClinicalTrialsGovCondition>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.updateClinicalTrialsGovCondition(id, clinicalTrialsGovCondition, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+  };
+};
+
+/**
+ * ClinicalTrialsGovConditionResourceApi - factory interface
+ * @export
+ */
+export const ClinicalTrialsGovConditionResourceApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance
+) {
+  const localVarFp = ClinicalTrialsGovConditionResourceApiFp(configuration);
+  return {
+    /**
+     *
+     * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createClinicalTrialsGovCondition(
+      clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+      options?: any
+    ): AxiosPromise<ClinicalTrialsGovCondition> {
+      return localVarFp.createClinicalTrialsGovCondition(clinicalTrialsGovCondition, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteClinicalTrialsGovCondition(id: number, options?: any): AxiosPromise<void> {
+      return localVarFp.deleteClinicalTrialsGovCondition(id, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {Pageable} pageable
+     * @param {boolean} [eagerload]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAllClinicalTrialsGovConditions(
+      pageable: Pageable,
+      eagerload?: boolean,
+      options?: any
+    ): AxiosPromise<Array<ClinicalTrialsGovCondition>> {
+      return localVarFp.getAllClinicalTrialsGovConditions(pageable, eagerload, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getClinicalTrialsGovCondition(id: number, options?: any): AxiosPromise<ClinicalTrialsGovCondition> {
+      return localVarFp.getClinicalTrialsGovCondition(id, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    partialUpdateClinicalTrialsGovCondition(
+      id: number,
+      clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+      options?: any
+    ): AxiosPromise<ClinicalTrialsGovCondition> {
+      return localVarFp
+        .partialUpdateClinicalTrialsGovCondition(id, clinicalTrialsGovCondition, options)
+        .then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {string} query
+     * @param {Pageable} pageable
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    searchClinicalTrialsGovConditions(query: string, pageable: Pageable, options?: any): AxiosPromise<Array<ClinicalTrialsGovCondition>> {
+      return localVarFp.searchClinicalTrialsGovConditions(query, pageable, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateClinicalTrialsGovCondition(
+      id: number,
+      clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+      options?: any
+    ): AxiosPromise<ClinicalTrialsGovCondition> {
+      return localVarFp.updateClinicalTrialsGovCondition(id, clinicalTrialsGovCondition, options).then(request => request(axios, basePath));
+    },
+  };
+};
+
+/**
+ * ClinicalTrialsGovConditionResourceApi - object-oriented interface
+ * @export
+ * @class ClinicalTrialsGovConditionResourceApi
+ * @extends {BaseAPI}
+ */
+export class ClinicalTrialsGovConditionResourceApi extends BaseAPI {
+  /**
+   *
+   * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ClinicalTrialsGovConditionResourceApi
+   */
+  public createClinicalTrialsGovCondition(clinicalTrialsGovCondition: ClinicalTrialsGovCondition, options?: AxiosRequestConfig) {
+    return ClinicalTrialsGovConditionResourceApiFp(this.configuration)
+      .createClinicalTrialsGovCondition(clinicalTrialsGovCondition, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ClinicalTrialsGovConditionResourceApi
+   */
+  public deleteClinicalTrialsGovCondition(id: number, options?: AxiosRequestConfig) {
+    return ClinicalTrialsGovConditionResourceApiFp(this.configuration)
+      .deleteClinicalTrialsGovCondition(id, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {Pageable} pageable
+   * @param {boolean} [eagerload]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ClinicalTrialsGovConditionResourceApi
+   */
+  public getAllClinicalTrialsGovConditions(pageable: Pageable, eagerload?: boolean, options?: AxiosRequestConfig) {
+    return ClinicalTrialsGovConditionResourceApiFp(this.configuration)
+      .getAllClinicalTrialsGovConditions(pageable, eagerload, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ClinicalTrialsGovConditionResourceApi
+   */
+  public getClinicalTrialsGovCondition(id: number, options?: AxiosRequestConfig) {
+    return ClinicalTrialsGovConditionResourceApiFp(this.configuration)
+      .getClinicalTrialsGovCondition(id, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {number} id
+   * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ClinicalTrialsGovConditionResourceApi
+   */
+  public partialUpdateClinicalTrialsGovCondition(
+    id: number,
+    clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+    options?: AxiosRequestConfig
+  ) {
+    return ClinicalTrialsGovConditionResourceApiFp(this.configuration)
+      .partialUpdateClinicalTrialsGovCondition(id, clinicalTrialsGovCondition, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {string} query
+   * @param {Pageable} pageable
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ClinicalTrialsGovConditionResourceApi
+   */
+  public searchClinicalTrialsGovConditions(query: string, pageable: Pageable, options?: AxiosRequestConfig) {
+    return ClinicalTrialsGovConditionResourceApiFp(this.configuration)
+      .searchClinicalTrialsGovConditions(query, pageable, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {number} id
+   * @param {ClinicalTrialsGovCondition} clinicalTrialsGovCondition
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ClinicalTrialsGovConditionResourceApi
+   */
+  public updateClinicalTrialsGovCondition(
+    id: number,
+    clinicalTrialsGovCondition: ClinicalTrialsGovCondition,
+    options?: AxiosRequestConfig
+  ) {
+    return ClinicalTrialsGovConditionResourceApiFp(this.configuration)
+      .updateClinicalTrialsGovCondition(id, clinicalTrialsGovCondition, options)
       .then(request => request(this.axios, this.basePath));
   }
 }
@@ -8764,6 +9457,549 @@ export class EnsemblGeneResourceApi extends BaseAPI {
   public updateEnsemblGene(id: number, ensemblGene: EnsemblGene, options?: AxiosRequestConfig) {
     return EnsemblGeneResourceApiFp(this.configuration)
       .updateEnsemblGene(id, ensemblGene, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+}
+
+/**
+ * FdaDrugResourceApi - axios parameter creator
+ * @export
+ */
+export const FdaDrugResourceApiAxiosParamCreator = function (configuration?: Configuration) {
+  return {
+    /**
+     *
+     * @param {FdaDrug} fdaDrug
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createFdaDrug: async (fdaDrug: FdaDrug, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'fdaDrug' is not null or undefined
+      assertParamExists('createFdaDrug', 'fdaDrug', fdaDrug);
+      const localVarPath = `/api/fda-drugs`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(fdaDrug, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteFdaDrug: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('deleteFdaDrug', 'id', id);
+      const localVarPath = `/api/fda-drugs/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {Pageable} pageable
+     * @param {string} [filter]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAllFdaDrugs: async (pageable: Pageable, filter?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'pageable' is not null or undefined
+      assertParamExists('getAllFdaDrugs', 'pageable', pageable);
+      const localVarPath = `/api/fda-drugs`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (pageable !== undefined) {
+        localVarQueryParameter['pageable'] = pageable;
+      }
+
+      if (filter !== undefined) {
+        localVarQueryParameter['filter'] = filter;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFdaDrug: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('getFdaDrug', 'id', id);
+      const localVarPath = `/api/fda-drugs/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {FdaDrug} fdaDrug
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    partialUpdateFdaDrug: async (id: number, fdaDrug: FdaDrug, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('partialUpdateFdaDrug', 'id', id);
+      // verify required parameter 'fdaDrug' is not null or undefined
+      assertParamExists('partialUpdateFdaDrug', 'fdaDrug', fdaDrug);
+      const localVarPath = `/api/fda-drugs/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(fdaDrug, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {string} query
+     * @param {Pageable} pageable
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    searchFdaDrugs: async (query: string, pageable: Pageable, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'query' is not null or undefined
+      assertParamExists('searchFdaDrugs', 'query', query);
+      // verify required parameter 'pageable' is not null or undefined
+      assertParamExists('searchFdaDrugs', 'pageable', pageable);
+      const localVarPath = `/api/_search/fda-drugs`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (query !== undefined) {
+        localVarQueryParameter['query'] = query;
+      }
+
+      if (pageable !== undefined) {
+        localVarQueryParameter['pageable'] = pageable;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {FdaDrug} fdaDrug
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateFdaDrug: async (id: number, fdaDrug: FdaDrug, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      // verify required parameter 'id' is not null or undefined
+      assertParamExists('updateFdaDrug', 'id', id);
+      // verify required parameter 'fdaDrug' is not null or undefined
+      assertParamExists('updateFdaDrug', 'fdaDrug', fdaDrug);
+      const localVarPath = `/api/fda-drugs/{id}`.replace(`{${'id'}}`, encodeURIComponent(String(id)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+      localVarRequestOptions.data = serializeDataIfNeeded(fdaDrug, localVarRequestOptions, configuration);
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
+};
+
+/**
+ * FdaDrugResourceApi - functional programming interface
+ * @export
+ */
+export const FdaDrugResourceApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = FdaDrugResourceApiAxiosParamCreator(configuration);
+  return {
+    /**
+     *
+     * @param {FdaDrug} fdaDrug
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async createFdaDrug(
+      fdaDrug: FdaDrug,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FdaDrug>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.createFdaDrug(fdaDrug, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async deleteFdaDrug(
+      id: number,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deleteFdaDrug(id, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {Pageable} pageable
+     * @param {string} [filter]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getAllFdaDrugs(
+      pageable: Pageable,
+      filter?: string,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<FdaDrug>>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getAllFdaDrugs(pageable, filter, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getFdaDrug(
+      id: number,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FdaDrug>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getFdaDrug(id, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {FdaDrug} fdaDrug
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async partialUpdateFdaDrug(
+      id: number,
+      fdaDrug: FdaDrug,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FdaDrug>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.partialUpdateFdaDrug(id, fdaDrug, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {string} query
+     * @param {Pageable} pageable
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async searchFdaDrugs(
+      query: string,
+      pageable: Pageable,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<FdaDrug>>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.searchFdaDrugs(query, pageable, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {FdaDrug} fdaDrug
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async updateFdaDrug(
+      id: number,
+      fdaDrug: FdaDrug,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FdaDrug>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.updateFdaDrug(id, fdaDrug, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+  };
+};
+
+/**
+ * FdaDrugResourceApi - factory interface
+ * @export
+ */
+export const FdaDrugResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+  const localVarFp = FdaDrugResourceApiFp(configuration);
+  return {
+    /**
+     *
+     * @param {FdaDrug} fdaDrug
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createFdaDrug(fdaDrug: FdaDrug, options?: any): AxiosPromise<FdaDrug> {
+      return localVarFp.createFdaDrug(fdaDrug, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteFdaDrug(id: number, options?: any): AxiosPromise<void> {
+      return localVarFp.deleteFdaDrug(id, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {Pageable} pageable
+     * @param {string} [filter]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAllFdaDrugs(pageable: Pageable, filter?: string, options?: any): AxiosPromise<Array<FdaDrug>> {
+      return localVarFp.getAllFdaDrugs(pageable, filter, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFdaDrug(id: number, options?: any): AxiosPromise<FdaDrug> {
+      return localVarFp.getFdaDrug(id, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {FdaDrug} fdaDrug
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    partialUpdateFdaDrug(id: number, fdaDrug: FdaDrug, options?: any): AxiosPromise<FdaDrug> {
+      return localVarFp.partialUpdateFdaDrug(id, fdaDrug, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {string} query
+     * @param {Pageable} pageable
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    searchFdaDrugs(query: string, pageable: Pageable, options?: any): AxiosPromise<Array<FdaDrug>> {
+      return localVarFp.searchFdaDrugs(query, pageable, options).then(request => request(axios, basePath));
+    },
+    /**
+     *
+     * @param {number} id
+     * @param {FdaDrug} fdaDrug
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateFdaDrug(id: number, fdaDrug: FdaDrug, options?: any): AxiosPromise<FdaDrug> {
+      return localVarFp.updateFdaDrug(id, fdaDrug, options).then(request => request(axios, basePath));
+    },
+  };
+};
+
+/**
+ * FdaDrugResourceApi - object-oriented interface
+ * @export
+ * @class FdaDrugResourceApi
+ * @extends {BaseAPI}
+ */
+export class FdaDrugResourceApi extends BaseAPI {
+  /**
+   *
+   * @param {FdaDrug} fdaDrug
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FdaDrugResourceApi
+   */
+  public createFdaDrug(fdaDrug: FdaDrug, options?: AxiosRequestConfig) {
+    return FdaDrugResourceApiFp(this.configuration)
+      .createFdaDrug(fdaDrug, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FdaDrugResourceApi
+   */
+  public deleteFdaDrug(id: number, options?: AxiosRequestConfig) {
+    return FdaDrugResourceApiFp(this.configuration)
+      .deleteFdaDrug(id, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {Pageable} pageable
+   * @param {string} [filter]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FdaDrugResourceApi
+   */
+  public getAllFdaDrugs(pageable: Pageable, filter?: string, options?: AxiosRequestConfig) {
+    return FdaDrugResourceApiFp(this.configuration)
+      .getAllFdaDrugs(pageable, filter, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {number} id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FdaDrugResourceApi
+   */
+  public getFdaDrug(id: number, options?: AxiosRequestConfig) {
+    return FdaDrugResourceApiFp(this.configuration)
+      .getFdaDrug(id, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {number} id
+   * @param {FdaDrug} fdaDrug
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FdaDrugResourceApi
+   */
+  public partialUpdateFdaDrug(id: number, fdaDrug: FdaDrug, options?: AxiosRequestConfig) {
+    return FdaDrugResourceApiFp(this.configuration)
+      .partialUpdateFdaDrug(id, fdaDrug, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {string} query
+   * @param {Pageable} pageable
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FdaDrugResourceApi
+   */
+  public searchFdaDrugs(query: string, pageable: Pageable, options?: AxiosRequestConfig) {
+    return FdaDrugResourceApiFp(this.configuration)
+      .searchFdaDrugs(query, pageable, options)
+      .then(request => request(this.axios, this.basePath));
+  }
+
+  /**
+   *
+   * @param {number} id
+   * @param {FdaDrug} fdaDrug
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof FdaDrugResourceApi
+   */
+  public updateFdaDrug(id: number, fdaDrug: FdaDrug, options?: AxiosRequestConfig) {
+    return FdaDrugResourceApiFp(this.configuration)
+      .updateFdaDrug(id, fdaDrug, options)
       .then(request => request(this.axios, this.basePath));
   }
 }
