@@ -71,25 +71,23 @@ public class CdxImporter {
             return;
         }
 
-        List<String> headers = parsedCdxContent.get(0);
-
         for (int i = 0; i < parsedCdxContent.size(); i++) {
             if (i == 0) {
                 continue; // Skipping header row
             }
 
-            List<String> row = parsedCdxContent.get(i);
-            CompanionDiagnosticDevice cdx = null;
-            FdaSubmission fdaSubmission = null;
-            List<Drug> drugs = new ArrayList<>();
-            Gene gene = null;
-            List<Alteration> alterations = new ArrayList<>();
-            CancerType cancerType = null;
+            try {
+                List<String> row = parsedCdxContent.get(i);
+                CompanionDiagnosticDevice cdx = null;
+                FdaSubmission fdaSubmission = null;
+                List<Drug> drugs = new ArrayList<>();
+                Gene gene = null;
+                List<Alteration> alterations = new ArrayList<>();
+                CancerType cancerType = null;
 
-            // Parse row
-            for (int colIndex = 0; colIndex < row.size(); colIndex++) {
-                String columnValue = row.get(colIndex).trim();
-                try {
+                // Parse row
+                for (int colIndex = 0; colIndex < row.size(); colIndex++) {
+                    String columnValue = row.get(colIndex).trim();
                     switch (colIndex) {
                         case 0:
                             cdx = parseCdxNameColumn(columnValue);
@@ -111,38 +109,29 @@ public class CdxImporter {
                             drugs = parseDrugColumn(columnValue);
                             break;
                         case 11:
-                            Optional<Gene> optionalGene = geneService.findGeneByHugoSymbol(columnValue);
-                            if (optionalGene.isPresent()) {
-                                gene = optionalGene.get();
-                            } else {
-                                throw new IllegalArgumentException("Could not find gene " + columnValue);
-                            }
+                            gene = parseGeneColumn(columnValue);
                             break;
                         case 12:
                             alterations = parseAlterationColumn(columnValue, gene);
                             break;
                         case 13:
-                            Optional<SpecimenType> optionalSpecimenType = specimenTypeService.findOneByType(columnValue);
-                            if (optionalSpecimenType.isPresent()) {
-                                cdx.addSpecimenType(optionalSpecimenType.get());
-                            }
+                            parseSpecimenTypeColumn(columnValue, cdx);
+                            break;
                         default:
                             break;
                     }
-                } catch (IllegalArgumentException e) {
-                    String message = e.getMessage();
-                    if (e.getMessage() == null) {
-                        message = String.format("Cannot parse column '{}' with value '{}'", headers.get(colIndex), columnValue);
-                    }
-                    log.error(message);
-                    log.error("Issue processing row {}, skipping...", i);
-                    break;
                 }
+                saveCdxInformation(cdx, fdaSubmission, cancerType, drugs, alterations);
+                log.info("Successfully imported row {}", i);
+            } catch (IllegalArgumentException e) {
+                String message = e.getMessage();
+                if (message == null) {
+                    message = String.format("Could not parse column in row %s", i);
+                }
+                log.error(message);
+                log.error("Issue processing row {}, skipping...", i);
+                continue;
             }
-
-            saveCdxInformation(cdx, fdaSubmission, cancerType, drugs, alterations);
-            log.info("Successfully imported row {}", i);
-            break;
         }
     }
 
@@ -153,11 +142,12 @@ public class CdxImporter {
         List<Drug> drugs,
         List<Alteration> alterations
     ) {
+        // Create or update CompanionDiagnosticDevice and FdaSubmission entities
         fdaSubmissionService.save(fdaSubmission);
         cdx.addFdaSubmission(fdaSubmission);
         companionDiagnosticDeviceService.save(cdx);
 
-        // Create DeviceUsageIndication
+        // Create DeviceUsageIndication entity
         DeviceUsageIndication deviceUsageIndication = new DeviceUsageIndication();
         deviceUsageIndication.setCancerType(cancerType);
         deviceUsageIndication.setFdaSubmission(fdaSubmission);
@@ -210,7 +200,7 @@ public class CdxImporter {
         List<Drug> drugs = new ArrayList<>();
         String[] drugStrings = { columnValue };
         if (columnValue.contains("+")) { // Combination drug
-            drugStrings = columnValue.split("+");
+            drugStrings = columnValue.split("\\+");
         }
         for (String drugString : drugStrings) {
             drugString = drugString.trim();
@@ -224,6 +214,14 @@ public class CdxImporter {
         return drugs;
     }
 
+    private Gene parseGeneColumn(String columnValue) throws IllegalArgumentException {
+        Optional<Gene> optionalGene = geneService.findGeneByHugoSymbol(columnValue);
+        if (!optionalGene.isPresent()) {
+            throw new IllegalArgumentException("Could not find gene " + columnValue);
+        }
+        return optionalGene.get();
+    }
+
     private List<Alteration> parseAlterationColumn(String columnValue, Gene gene) throws IllegalArgumentException {
         if (gene == null || gene.getId() == null) {
             throw new IllegalArgumentException();
@@ -234,6 +232,7 @@ public class CdxImporter {
         if (columnValue.contains(",")) {
             alterationStrings = columnValue.split(",");
         }
+
         for (String alterationString : alterationStrings) {
             alterationString = alterationString.trim();
             Optional<Alteration> optionalAlteration = alterationService.findOneByGeneIdAndAlterationName(geneId, alterationString);
@@ -244,6 +243,15 @@ public class CdxImporter {
             }
         }
         return alterations;
+    }
+
+    private void parseSpecimenTypeColumn(String columnValue, CompanionDiagnosticDevice cdx) throws IllegalArgumentException {
+        Optional<SpecimenType> optionalSpecimenType = specimenTypeService.findOneByType(columnValue);
+        if (optionalSpecimenType.isPresent() && cdx != null) {
+            cdx.addSpecimenType(optionalSpecimenType.get());
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     private List<List<String>> readInitialCdxFile() throws IOException {

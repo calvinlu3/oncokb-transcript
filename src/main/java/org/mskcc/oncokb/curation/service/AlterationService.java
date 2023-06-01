@@ -5,6 +5,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 import java.util.List;
 import java.util.Optional;
 import org.mskcc.oncokb.curation.domain.Alteration;
+import org.mskcc.oncokb.curation.domain.Gene;
 import org.mskcc.oncokb.curation.repository.AlterationRepository;
 import org.mskcc.oncokb.curation.repository.search.AlterationSearchRepository;
 import org.slf4j.Logger;
