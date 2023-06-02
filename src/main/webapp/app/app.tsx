@@ -15,6 +15,7 @@ import NavigationSidebar from 'app/components/sidebar/NavigationSidebar';
 import { Container } from 'reactstrap';
 import { computed, makeObservable } from 'mobx';
 import CurationPanel from './components/curationPanel/CurationPanel';
+import OncoKBBreadcrumb from 'app/shared/breadcrumb/OncoKBBreadcrumb';
 
 const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
 
@@ -45,12 +46,12 @@ class App extends React.Component<IAppProps> {
           <Header isAuthenticated={this.props.isAuthenticated} isAdmin={this.props.isAdmin} />
           <div style={{ display: 'flex' }}>
             {this.props.isAuthorized && <NavigationSidebar />}
-            <div style={{ flex: 1, marginLeft: this.sideBarWidth, padding: '2rem 0 2rem' }}>
+            <div style={{ flex: 1, padding: '2rem 0 2rem' }}>
               <Container fluid>
                 <AppRoutes />
               </Container>
             </div>
-            <div style={{ float: 'right', width: '350px', display: this.curationPanelDisplay }}>
+            <div style={{ display: this.curationPanelDisplay }}>
               <CurationPanel />
             </div>
           </div>
@@ -67,6 +68,7 @@ const mapStoreToProps = ({ authStore, layoutStore }: IRootStore) => ({
   getSession: authStore.getSession,
   sidebarWidth: layoutStore.sidebarWidth,
   showCurationPanel: layoutStore.showCurationPanel,
+  isSideBarCollapsed: layoutStore.isSideBarCollapsed,
 });
 
 type StoreProps = ReturnType<typeof mapStoreToProps>;

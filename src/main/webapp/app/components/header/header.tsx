@@ -9,6 +9,7 @@ import { PAGE_ROUTE } from 'app/config/constants';
 import OptimizedImage from 'app/oncokb-commons/components/image/OptimizedImage';
 import { action, makeObservable, observable } from 'mobx';
 import OncoKBBreadcrumb from 'app/shared/breadcrumb/OncoKBBreadcrumb';
+import { GeneralSearch } from 'app/shared/search/GeneralSearch';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -38,15 +39,10 @@ class Header extends React.Component<IHeaderProps> {
             <NavbarBrand as={NavLink} to={PAGE_ROUTE.HOME}>
               <OptimizedImage height={25} src={oncokbLogo} alt={'OncoKB'} />
             </NavbarBrand>
-            <NavbarToggler aria-label="Menu" onClick={this.toggleNavMenu} />
-            <Collapse isOpen={this.isNavMenuExpanded} navbar>
-              <Nav className="ml-auto" navbar>
-                <AccountMenu isAuthenticated={this.props.isAuthenticated} isAdmin={this.props.isAdmin} />
-              </Nav>
-            </Collapse>
+            <GeneralSearch />
           </Container>
         </Navbar>
-        <OncoKBBreadcrumb />
+        {/* <OncoKBBreadcrumb /> */}
       </header>
     );
   }

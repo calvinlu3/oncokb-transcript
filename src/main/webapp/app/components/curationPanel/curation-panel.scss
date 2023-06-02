@@ -1,8 +1,6 @@
 @import '../../variables.scss';
 
 .curation-sidebar-wrapper {
-  z-index: 1000;
-  position: fixed;
   height: 100vh;
 
   .pro-sidebar {
@@ -11,9 +9,7 @@
   }
 
   .curation-sidebar-header {
-    background-color: whitesmoke;
     width: 100%;
-    padding: 8px 24px 0 24px;
     font-weight: bold;
     font-size: 18px;
   }
@@ -25,4 +21,8 @@
   .pro-inner-item {
     cursor: default !important;
   }
+}
+
+.ps-rtl {
+  direction: ltr !important;
 }

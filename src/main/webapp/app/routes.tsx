@@ -13,6 +13,7 @@ import LoginRedirect from './pages/login/login-redirect';
 import UserManagementPage from './pages/UserManagementPage';
 import Entities from 'app/entities';
 import PageContainer from './components/PageContainer';
+import OncoKBBreadcrumb from './shared/breadcrumb/OncoKBBreadcrumb';
 
 const Account = Loadable({
   loader: () => import(/* webpackChunkName: "account" */ './pages/account/SettingsPage'),
@@ -30,6 +31,7 @@ const Routes = () => {
       <Switch>
         <Redirect exact from={PAGE_ROUTE.HOME} to={PAGE_ROUTE.SEARCH} />
         <PageContainer>
+          <OncoKBBreadcrumb />
           <Switch>
             <ErrorBoundaryRoute exact path={PAGE_ROUTE.LOGIN} component={Login} />
             <ErrorBoundaryRoute exact path={PAGE_ROUTE.LOGOUT} component={Logout} />

@@ -137,11 +137,11 @@ export const GeneralSearch = props => {
           }}
         />
       </div>
-      <div className={'ml-2'} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      {/* <div className={'ml-2'} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <DefaultTooltip placement="bottom" overlay={SearchInfoIconOverlay}>
           <FontAwesomeIcon icon={faInfoCircle} />
         </DefaultTooltip>
-      </div>
+      </div> */}
     </div>
   );
 };
