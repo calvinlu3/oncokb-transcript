@@ -958,18 +958,6 @@ export interface FdaDrug {
    * @memberof FdaDrug
    */
   applicationNumber: string;
-  /**
-   *
-   * @type {string}
-   * @memberof FdaDrug
-   */
-  brandName?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof FdaDrug
-   */
-  genericName?: string;
 }
 /**
  *

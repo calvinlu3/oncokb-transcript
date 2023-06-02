@@ -88,8 +88,6 @@ export const FdaDrugUpdate = (props: IFdaDrugUpdateProps) => {
                   required: { value: true, message: 'This field is required.' },
                 }}
               />
-              <ValidatedField label="Brand Name" id="fda-drug-brandName" name="brandName" data-cy="brandName" type="text" />
-              <ValidatedField label="Generic Name" id="fda-drug-genericName" name="genericName" data-cy="genericName" type="text" />
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/fda-drug" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

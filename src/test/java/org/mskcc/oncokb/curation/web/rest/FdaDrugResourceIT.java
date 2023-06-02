@@ -81,10 +81,7 @@ class FdaDrugResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static FdaDrug createEntity(EntityManager em) {
-        FdaDrug fdaDrug = new FdaDrug()
-            .applicationNumber(DEFAULT_APPLICATION_NUMBER)
-            .brandName(DEFAULT_BRAND_NAME)
-            .genericName(DEFAULT_GENERIC_NAME);
+        FdaDrug fdaDrug = new FdaDrug().applicationNumber(DEFAULT_APPLICATION_NUMBER);
         return fdaDrug;
     }
 
@@ -95,10 +92,7 @@ class FdaDrugResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static FdaDrug createUpdatedEntity(EntityManager em) {
-        FdaDrug fdaDrug = new FdaDrug()
-            .applicationNumber(UPDATED_APPLICATION_NUMBER)
-            .brandName(UPDATED_BRAND_NAME)
-            .genericName(UPDATED_GENERIC_NAME);
+        FdaDrug fdaDrug = new FdaDrug().applicationNumber(UPDATED_APPLICATION_NUMBER);
         return fdaDrug;
     }
 
@@ -126,8 +120,6 @@ class FdaDrugResourceIT {
         assertThat(fdaDrugList).hasSize(databaseSizeBeforeCreate + 1);
         FdaDrug testFdaDrug = fdaDrugList.get(fdaDrugList.size() - 1);
         assertThat(testFdaDrug.getApplicationNumber()).isEqualTo(DEFAULT_APPLICATION_NUMBER);
-        assertThat(testFdaDrug.getBrandName()).isEqualTo(DEFAULT_BRAND_NAME);
-        assertThat(testFdaDrug.getGenericName()).isEqualTo(DEFAULT_GENERIC_NAME);
 
         // Validate the FdaDrug in Elasticsearch
         verify(mockFdaDrugSearchRepository, times(1)).save(testFdaDrug);
@@ -193,9 +185,7 @@ class FdaDrugResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(fdaDrug.getId().intValue())))
-            .andExpect(jsonPath("$.[*].applicationNumber").value(hasItem(DEFAULT_APPLICATION_NUMBER)))
-            .andExpect(jsonPath("$.[*].brandName").value(hasItem(DEFAULT_BRAND_NAME)))
-            .andExpect(jsonPath("$.[*].genericName").value(hasItem(DEFAULT_GENERIC_NAME)));
+            .andExpect(jsonPath("$.[*].applicationNumber").value(hasItem(DEFAULT_APPLICATION_NUMBER)));
     }
 
     @Test
@@ -210,9 +200,7 @@ class FdaDrugResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(fdaDrug.getId().intValue()))
-            .andExpect(jsonPath("$.applicationNumber").value(DEFAULT_APPLICATION_NUMBER))
-            .andExpect(jsonPath("$.brandName").value(DEFAULT_BRAND_NAME))
-            .andExpect(jsonPath("$.genericName").value(DEFAULT_GENERIC_NAME));
+            .andExpect(jsonPath("$.applicationNumber").value(DEFAULT_APPLICATION_NUMBER));
     }
 
     @Test
@@ -234,7 +222,7 @@ class FdaDrugResourceIT {
         FdaDrug updatedFdaDrug = fdaDrugRepository.findById(fdaDrug.getId()).get();
         // Disconnect from session so that the updates on updatedFdaDrug are not directly saved in db
         em.detach(updatedFdaDrug);
-        updatedFdaDrug.applicationNumber(UPDATED_APPLICATION_NUMBER).brandName(UPDATED_BRAND_NAME).genericName(UPDATED_GENERIC_NAME);
+        updatedFdaDrug.applicationNumber(UPDATED_APPLICATION_NUMBER);
 
         restFdaDrugMockMvc
             .perform(
@@ -250,8 +238,6 @@ class FdaDrugResourceIT {
         assertThat(fdaDrugList).hasSize(databaseSizeBeforeUpdate);
         FdaDrug testFdaDrug = fdaDrugList.get(fdaDrugList.size() - 1);
         assertThat(testFdaDrug.getApplicationNumber()).isEqualTo(UPDATED_APPLICATION_NUMBER);
-        assertThat(testFdaDrug.getBrandName()).isEqualTo(UPDATED_BRAND_NAME);
-        assertThat(testFdaDrug.getGenericName()).isEqualTo(UPDATED_GENERIC_NAME);
 
         // Validate the FdaDrug in Elasticsearch
         verify(mockFdaDrugSearchRepository).save(testFdaDrug);
@@ -338,7 +324,7 @@ class FdaDrugResourceIT {
         FdaDrug partialUpdatedFdaDrug = new FdaDrug();
         partialUpdatedFdaDrug.setId(fdaDrug.getId());
 
-        partialUpdatedFdaDrug.applicationNumber(UPDATED_APPLICATION_NUMBER).genericName(UPDATED_GENERIC_NAME);
+        partialUpdatedFdaDrug.applicationNumber(UPDATED_APPLICATION_NUMBER);
 
         restFdaDrugMockMvc
             .perform(
@@ -354,8 +340,6 @@ class FdaDrugResourceIT {
         assertThat(fdaDrugList).hasSize(databaseSizeBeforeUpdate);
         FdaDrug testFdaDrug = fdaDrugList.get(fdaDrugList.size() - 1);
         assertThat(testFdaDrug.getApplicationNumber()).isEqualTo(UPDATED_APPLICATION_NUMBER);
-        assertThat(testFdaDrug.getBrandName()).isEqualTo(DEFAULT_BRAND_NAME);
-        assertThat(testFdaDrug.getGenericName()).isEqualTo(UPDATED_GENERIC_NAME);
     }
 
     @Test
@@ -370,7 +354,7 @@ class FdaDrugResourceIT {
         FdaDrug partialUpdatedFdaDrug = new FdaDrug();
         partialUpdatedFdaDrug.setId(fdaDrug.getId());
 
-        partialUpdatedFdaDrug.applicationNumber(UPDATED_APPLICATION_NUMBER).brandName(UPDATED_BRAND_NAME).genericName(UPDATED_GENERIC_NAME);
+        partialUpdatedFdaDrug.applicationNumber(UPDATED_APPLICATION_NUMBER);
 
         restFdaDrugMockMvc
             .perform(
@@ -386,8 +370,6 @@ class FdaDrugResourceIT {
         assertThat(fdaDrugList).hasSize(databaseSizeBeforeUpdate);
         FdaDrug testFdaDrug = fdaDrugList.get(fdaDrugList.size() - 1);
         assertThat(testFdaDrug.getApplicationNumber()).isEqualTo(UPDATED_APPLICATION_NUMBER);
-        assertThat(testFdaDrug.getBrandName()).isEqualTo(UPDATED_BRAND_NAME);
-        assertThat(testFdaDrug.getGenericName()).isEqualTo(UPDATED_GENERIC_NAME);
     }
 
     @Test
@@ -498,8 +480,6 @@ class FdaDrugResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(fdaDrug.getId().intValue())))
-            .andExpect(jsonPath("$.[*].applicationNumber").value(hasItem(DEFAULT_APPLICATION_NUMBER)))
-            .andExpect(jsonPath("$.[*].brandName").value(hasItem(DEFAULT_BRAND_NAME)))
-            .andExpect(jsonPath("$.[*].genericName").value(hasItem(DEFAULT_GENERIC_NAME)));
+            .andExpect(jsonPath("$.[*].applicationNumber").value(hasItem(DEFAULT_APPLICATION_NUMBER)));
     }
 }

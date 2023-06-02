@@ -60,13 +60,6 @@ public class FdaDrugService {
                 if (fdaDrug.getApplicationNumber() != null) {
                     existingFdaDrug.setApplicationNumber(fdaDrug.getApplicationNumber());
                 }
-                if (fdaDrug.getBrandName() != null) {
-                    existingFdaDrug.setBrandName(fdaDrug.getBrandName());
-                }
-                if (fdaDrug.getGenericName() != null) {
-                    existingFdaDrug.setGenericName(fdaDrug.getGenericName());
-                }
-
                 return existingFdaDrug;
             })
             .map(fdaDrugRepository::save)

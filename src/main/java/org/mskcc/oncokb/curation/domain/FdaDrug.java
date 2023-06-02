@@ -24,12 +24,6 @@ public class FdaDrug implements Serializable {
     @Column(name = "application_number", nullable = false, unique = true)
     private String applicationNumber;
 
-    @Column(name = "brand_name")
-    private String brandName;
-
-    @Column(name = "generic_name")
-    private String genericName;
-
     @JsonIgnoreProperties(value = { "fdaDrug", "synonyms", "deviceUsageIndications", "brands" }, allowSetters = true)
     @OneToOne(mappedBy = "fdaDrug")
     private Drug drug;
@@ -60,32 +54,6 @@ public class FdaDrug implements Serializable {
 
     public void setApplicationNumber(String applicationNumber) {
         this.applicationNumber = applicationNumber;
-    }
-
-    public String getBrandName() {
-        return this.brandName;
-    }
-
-    public FdaDrug brandName(String brandName) {
-        this.setBrandName(brandName);
-        return this;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
-
-    public String getGenericName() {
-        return this.genericName;
-    }
-
-    public FdaDrug genericName(String genericName) {
-        this.setGenericName(genericName);
-        return this;
-    }
-
-    public void setGenericName(String genericName) {
-        this.genericName = genericName;
     }
 
     public Drug getDrug() {
@@ -132,8 +100,6 @@ public class FdaDrug implements Serializable {
         return "FdaDrug{" +
             "id=" + getId() +
             ", applicationNumber='" + getApplicationNumber() + "'" +
-            ", brandName='" + getBrandName() + "'" +
-            ", genericName='" + getGenericName() + "'" +
             "}";
     }
 }

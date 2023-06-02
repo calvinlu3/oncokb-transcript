@@ -156,12 +156,6 @@ export const FdaDrug = (props: IFdaDrugProps) => {
                 <th className="hand" onClick={sort('applicationNumber')}>
                   Application Number <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('brandName')}>
-                  Brand Name <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('genericName')}>
-                  Generic Name <FontAwesomeIcon icon="sort" />
-                </th>
                 <th />
               </tr>
             </thead>
@@ -174,8 +168,6 @@ export const FdaDrug = (props: IFdaDrugProps) => {
                     </Button>
                   </td>
                   <td>{fdaDrug.applicationNumber}</td>
-                  <td>{fdaDrug.brandName}</td>
-                  <td>{fdaDrug.genericName}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${fdaDrug.id}`} color="info" size="sm" data-cy="entityDetailsButton">

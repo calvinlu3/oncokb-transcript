@@ -54,8 +54,6 @@ entity Drug {
 
 entity FdaDrug {
     applicationNumber String unique required
-    brandName String
-    genericName String
 }
 
 entity DrugSynonym {
