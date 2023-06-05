@@ -46,7 +46,7 @@ class App extends React.Component<IAppProps> {
           <Header isAuthenticated={this.props.isAuthenticated} isAdmin={this.props.isAdmin} />
           <div style={{ display: 'flex' }}>
             {this.props.isAuthorized && <NavigationSidebar />}
-            <div style={{ flex: 1, padding: '2rem 0 2rem' }}>
+            <div style={{ flex: 1, marginLeft: this.sideBarWidth, padding: '2rem 0 2rem' }}>
               <Container fluid>
                 <AppRoutes />
               </Container>

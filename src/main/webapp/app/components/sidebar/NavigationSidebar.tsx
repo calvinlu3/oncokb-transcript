@@ -38,14 +38,20 @@ const AccountMenuItemsAuthenticated: React.FunctionComponent<{
 
 export const NavigationSidebar = (props: StoreProps) => {
   return (
-    <Sidebar collapsed={props.isSideBarCollapsed} width={'240px'} breakPoint={'md'}>
+    <Sidebar
+      collapsed={props.isSideBarCollapsed}
+      width={'240px'}
+      breakPoint={'md'}
+      style={{ position: 'fixed' }}
+      rootStyles={{ backgroundColor: '#F3F3F3' }}
+    >
       <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-        <SidebarHeader
+        {/* <SidebarHeader
           style={{ marginBottom: '24px', marginTop: '16px' }}
           rtl={false}
           toggleSidebar={props.toggleSideBar}
           isCollapsed={props.isSideBarCollapsed}
-        />
+        /> */}
         {/* <Menu>
           <MenuItem icon={<FontAwesomeIcon size="lg" icon={faBars} />} onClick={props.toggleSideBar} />
         </Menu> */}

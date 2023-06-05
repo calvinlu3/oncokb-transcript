@@ -44,11 +44,13 @@ const getSearchResults = async (search: string) => {
 };
 
 const debouncedSearch = _.debounce((searchTerm, callback) => {
-  getSearchResults(searchTerm)
-    .then(result => {
-      return callback(result);
-    })
-    .catch((error: any) => callback(error, null));
+  /* eslint-disable no-console */
+  if (searchTerm)
+    getSearchResults(searchTerm)
+      .then(result => {
+        return callback(result);
+      })
+      .catch((error: any) => callback(error, null));
 }, 500);
 
 const SearchInfoIconOverlay: JSX.Element = (
@@ -101,9 +103,9 @@ export const GeneralSearch = props => {
   };
   return (
     <div style={{ display: 'flex' }}>
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, width: '200px' }}>
         <AsyncSelect
-          placeholder={'Search Gene / Alteration / Article / Drug / CDx / Fda Submission'}
+          placeholder={'Search'}
           styles={{
             input(styles) {
               return {

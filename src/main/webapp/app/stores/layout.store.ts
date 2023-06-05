@@ -1,7 +1,7 @@
 import { action, observable, makeObservable } from 'mobx';
 
 const SIDEBAR_COLLAPSED_WIDTH = 80;
-const SIDEBAR_EXPANDED_WIDTH = 200;
+const SIDEBAR_EXPANDED_WIDTH = 240;
 
 export class LayoutStore {
   public isSideBarCollapsed = false;
