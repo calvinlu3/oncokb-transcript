@@ -175,9 +175,14 @@ public class UserService {
         Gson gson = new Gson();
         String json = gson.toJson(attributes);
         KeycloakUserDTO keycloakUser = gson.fromJson(json, KeycloakUserDTO.class);
-        Optional<User> user = userRepository.findOneByEmailIgnoreCase(keycloakUser.getEmail());
-        if (user.isPresent()) {
-            return Optional.of(userMapper.userToUserDTO(user.get()));
+        return findOneByEmailIgnoreCase(keycloakUser.getEmail());
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserDTO> findOneByEmailIgnoreCase(String email) {
+        Optional<User> optionalUser = userRepository.findOneByEmailIgnoreCase(email);
+        if (optionalUser.isPresent()) {
+            return Optional.of(userMapper.userToUserDTO(optionalUser.get()));
         }
         return Optional.empty();
     }

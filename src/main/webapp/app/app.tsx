@@ -39,7 +39,7 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
     <Router basename={baseHref}>
       <div className="app-container">
         <ToastContainer position={toast.POSITION.TOP_CENTER} className="toastify-container" toastClassName="toastify-toast" />
-        <Header isAuthenticated={props.isAuthenticated} isAdmin={props.isAdmin} />
+        <Header isAuthenticated={props.isAuthenticated} isAdmin={props.isAdmin} account={props.account} />
         <div style={{ display: 'flex' }}>
           {props.isAuthorized && <NavigationSidebar />}
           <div style={{ flex: 1, marginLeft: sideBarWidth, padding: '2rem 0 2rem' }}>
@@ -61,6 +61,7 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
 const mapStoreToProps = ({ authStore, layoutStore, firebaseStore }: IRootStore) => ({
   isAuthenticated: authStore.isAuthenticated,
   isAuthorized: authStore.isAuthorized,
+  account: authStore.account,
   isAdmin: hasAnyAuthority(authStore.account.authorities, [AUTHORITIES.ADMIN]),
   hasFirebaseAccess: hasAnyAuthority(authStore.account.authorities, [AUTHORITIES.FIREBASE]),
   getSession: authStore.getSession,
