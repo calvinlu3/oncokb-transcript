@@ -37,29 +37,30 @@ export const AccountMenu: React.FunctionComponent<{
   isAuthenticated: boolean;
   isAdmin: boolean;
   account: IUser;
-}> = props => (
-  <UncontrolledDropdown nav inNavbar id="account-menu">
-    <DropdownToggle nav caret className="d-flex align-items-center">
-      <div className="mr-2">
-        {!props.account.imageUrl ? (
-          <OptimizedImage src={props.account.imageUrl} alt={'User'} className="account-menu-image" />
-        ) : (
-          <div className="account-menu-profile-circle">
-            <p className="account-menu-profile-text">{props.account.firstName[0]}</p>
-          </div>
-        )}
-      </div>
-      <div className="account-menu-container d-flex flex-column">
-        <div className="account-menu-name">
-          {props.account.firstName} {props.account.lastName}
+}> = props =>
+  props.isAuthenticated && (
+    <UncontrolledDropdown nav inNavbar id="account-menu">
+      <DropdownToggle nav caret className="d-flex align-items-center">
+        <div className="mr-2">
+          {props.account.imageUrl ? (
+            <OptimizedImage src={props.account.imageUrl} alt={'User'} className="account-menu-image" />
+          ) : (
+            <div className="account-menu-profile-circle">
+              <p className="account-menu-profile-text">{props.account.firstName[0]}</p>
+            </div>
+          )}
         </div>
-        <div className="account-menu-email">{props.account.email}</div>
-      </div>
-    </DropdownToggle>
-    <DropdownMenu right>
-      {props.isAuthenticated ? <AccountMenuItemsAuthenticated isAdmin={props.isAdmin} /> : <AccountMenuItems />}
-    </DropdownMenu>
-  </UncontrolledDropdown>
-);
+        <div className="account-menu-container d-flex flex-column">
+          <div className="account-menu-name">
+            {props.account.firstName} {props.account.lastName}
+          </div>
+          <div className="account-menu-email">{props.account.email}</div>
+        </div>
+      </DropdownToggle>
+      <DropdownMenu right>
+        <AccountMenuItemsAuthenticated isAdmin={props.isAdmin} />
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  );
 
 export default AccountMenu;
