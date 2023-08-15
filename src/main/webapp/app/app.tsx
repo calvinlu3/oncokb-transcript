@@ -13,21 +13,16 @@ import AppRoutes from 'app/routes';
 import NavigationSidebar from 'app/components/sidebar/NavigationSidebar';
 import { Container } from 'reactstrap';
 import CurationPanel from './components/curationPanel/CurationPanel';
+import OncoKBBreadcrumb from './shared/breadcrumb/OncoKBBreadcrumb';
 
 const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
 
 export type IAppProps = StoreProps;
 
 const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
-  const [sideBarWidth, setSideBarWidth] = useState('0');
-
   useEffect(() => {
     props.getSession();
   }, []);
-
-  useEffect(() => {
-    setSideBarWidth(!props.isAuthenticated || !props.isAuthorized ? '0' : `${props.sidebarWidth}px`);
-  }, [props.isAuthenticated, props.isAuthorized, props.sidebarWidth]);
 
   useEffect(() => {
     if (props.hasFirebaseAccess) {
@@ -39,11 +34,17 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
     <Router basename={baseHref}>
       <div className="app-container">
         <ToastContainer position={toast.POSITION.TOP_CENTER} className="toastify-container" toastClassName="toastify-toast" />
-        <Header isAuthenticated={props.isAuthenticated} isAdmin={props.isAdmin} account={props.account} />
+        <Header
+          isAuthenticated={props.isAuthenticated}
+          isAdmin={props.isAdmin}
+          account={props.account}
+          toggleNavigationSidebar={props.toggleNavSidebar}
+        />
         <div style={{ display: 'flex' }}>
           {props.isAuthorized && <NavigationSidebar />}
-          <div style={{ flex: 1, marginLeft: sideBarWidth, padding: '2rem 0 2rem' }}>
-            <Container fluid>
+          <div style={{ flex: 1, marginLeft: props.navigationSidebarWidth, transition: 'width,left,right,300ms' }}>
+            <OncoKBBreadcrumb />
+            <Container fluid style={{ padding: '2rem 0 2rem' }}>
               <AppRoutes />
             </Container>
           </div>
@@ -65,7 +66,8 @@ const mapStoreToProps = ({ authStore, layoutStore, firebaseStore }: IRootStore) 
   isAdmin: hasAnyAuthority(authStore.account.authorities, [AUTHORITIES.ADMIN]),
   hasFirebaseAccess: hasAnyAuthority(authStore.account.authorities, [AUTHORITIES.FIREBASE]),
   getSession: authStore.getSession,
-  sidebarWidth: layoutStore.sidebarWidth,
+  navigationSidebarWidth: layoutStore.navigationSidebarWidth,
+  toggleNavSidebar: layoutStore.toggleNavigationSidebar,
   showCurationPanel: layoutStore.showCurationPanel,
   initializeFirebase: firebaseStore.initializeFirebase,
 });

@@ -1,20 +1,38 @@
 @import '../../variables.scss';
 
-$sidebar-bg-color: whitesmoke;
-$sidebar-color: $oncokb-blue;
-$submenu-bg-color: whitesmoke;
-$sidebar-width: 200px;
-$sidebar-collapsed-wdith: 80px;
-$highlight-color: $oncokb-darker-blue;
+.ps-sidebar-root {
+  position: fixed !important;
+}
 
-@import '~react-pro-sidebar/dist/scss/styles.scss';
+.ps-sidebar-container {
+  background-color: $light-grey !important;
+}
 
-.sidebar-wrapper {
-  position: fixed;
-  height: 100vh;
-  z-index: 1000;
+.ps-menu-root {
+  // margin-top: 1.25rem !important;
+}
 
-  .pro-sidebar .pro-menu {
+.ps-menu-button {
+  height: 40px !important;
+  border-left: 3px solid $light-grey !important;
+  padding: 0 10px !important;
+
+  &:hover {
+    background-color: #f0f0f0 !important;
+    border-left: 3px solid #f0f0f0 !important;
+  }
+
+  &.active {
+    border-left: 3px solid $oncokb-blue !important;
+    height: 80%;
+    color: $oncokb-blue !important;
+  }
+}
+
+.ps-collapsed {
+  .ps-sidebar-custom-header {
     padding: 0 !important;
+    flex: 1;
+    text-align: center;
   }
 }

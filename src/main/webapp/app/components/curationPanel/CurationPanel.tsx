@@ -1,7 +1,7 @@
 import { connect } from 'app/shared/util/typed-inject';
 import { IRootStore } from 'app/stores/createStore';
 import React, { useEffect } from 'react';
-import { ProSidebar, SidebarContent, SidebarHeader } from 'react-pro-sidebar';
+import { Sidebar } from 'react-pro-sidebar';
 import { matchPath, useLocation } from 'react-router-dom';
 import './curation-panel.scss';
 import FdaSubmissionPanel from './FdaSubmissionPanel';
@@ -20,20 +20,18 @@ const CurationPanel: React.FunctionComponent<StoreProps> = props => {
 
   return (
     <div className="curation-sidebar-wrapper">
-      <ProSidebar>
-        <SidebarHeader>
-          <div className="curation-sidebar-header">Curation Panel</div>
-        </SidebarHeader>
-        <SidebarContent>
+      <Sidebar width={`${props.curationPanelWidth}px`}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
           <FdaSubmissionPanel />
-        </SidebarContent>
-      </ProSidebar>
+        </div>
+      </Sidebar>
     </div>
   );
 };
 
 const mapStoreToProps = ({ layoutStore }: IRootStore) => ({
   toggleCurationPanel: layoutStore.toggleCurationPanel,
+  curationPanelWidth: layoutStore.curationPanelWidth,
 });
 
 type StoreProps = ReturnType<typeof mapStoreToProps>;

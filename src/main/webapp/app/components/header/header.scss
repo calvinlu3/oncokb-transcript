@@ -8,6 +8,11 @@ Navbar styles
 ========================================================================== */
 .header {
   .navbar-brand {
+    margin-bottom: 0.3rem;
+  }
+
+  .header-navbar-toggle:hover {
+    cursor: pointer;
   }
 
   .navbar {
@@ -21,7 +26,6 @@ Navbar styles
     .navbar-nav {
       & > .nav-item {
         color: white;
-        line-height: 2.75rem;
 
         &:hover {
           text-decoration: none;
