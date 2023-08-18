@@ -41,15 +41,32 @@ public class CacheConfiguration extends CachingConfigurerSupport {
         if (applicationProperties.getRedis().getType().equals(RedisType.SINGLE.getType())) {
             config
                 .useSingleServer()
+                .setClientName(applicationProperties.getName())
+                .setTimeout(applicationProperties.getRedis().getTimeout())
+                .setRetryAttempts(applicationProperties.getRedis().getRetryAttempts())
+                .setRetryInterval(applicationProperties.getRedis().getRetryInterval())
                 .setAddress(applicationProperties.getRedis().getAddress())
                 .setPassword(applicationProperties.getRedis().getPassword());
         } else if (applicationProperties.getRedis().getType().equals(RedisType.SENTINEL.getType())) {
             config
                 .useSentinelServers()
+                .setClientName(applicationProperties.getName())
+                .setTimeout(applicationProperties.getRedis().getTimeout())
+                .setRetryAttempts(applicationProperties.getRedis().getRetryAttempts())
+                .setRetryInterval(applicationProperties.getRedis().getRetryInterval())
                 .setMasterName(applicationProperties.getRedis().getSentinelMasterName())
                 .setCheckSentinelsList(false)
                 .addSentinelAddress(applicationProperties.getRedis().getAddress())
                 .setPassword(applicationProperties.getRedis().getPassword());
+        } else if (applicationProperties.getRedis().getType().equals(RedisType.CLUSTER.getType())) {
+            config
+                .useClusterServers()
+                .setTimeout(applicationProperties.getRedis().getTimeout())
+                .setRetryAttempts(applicationProperties.getRedis().getRetryAttempts())
+                .setRetryInterval(applicationProperties.getRedis().getRetryInterval())
+                .addNodeAddress(applicationProperties.getRedis().getAddress())
+                .setPassword(applicationProperties.getRedis().getPassword())
+                .setClientName(applicationProperties.getName());
         } else {
             throw new Exception(
                 "The redis type " +
@@ -104,6 +121,7 @@ public class CacheConfiguration extends CachingConfigurerSupport {
                 jcacheConfiguration,
                 cacheNameResolver
             );
+            // jhipster-needle-redis-add-entry
         };
     }
 
