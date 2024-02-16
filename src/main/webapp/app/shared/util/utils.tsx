@@ -273,3 +273,7 @@ export function isNumeric(value: string) {
 export function notNullOrUndefined(val) {
   return val !== null && val !== undefined;
 }
+
+export function hasDuplicates(array: any[]) {
+  return new Set(array).size !== array.length;
+}

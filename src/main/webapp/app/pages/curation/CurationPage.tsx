@@ -659,7 +659,7 @@ const CurationPage = (props: ICurationPageProps) => {
                 showIcon={false}
               />
             )}
-            <VusTable hugoSymbol={hugoSymbol} />
+            <VusTable hugoSymbol={hugoSymbol} mutationList={props.data.mutations} />
             <Modal isOpen={showFilterModal} toggle={handleToggleFilterModal}>
               <ModalHeader>
                 <Container>

@@ -9,12 +9,16 @@ import {
   TX_LEVELS,
   Tumor,
   Alteration,
+  VusObjList,
 } from 'app/shared/model/firebase/firebase.model';
 import { replaceUrlParams } from '../url-utils';
 import { FB_COLLECTION_PATH } from 'app/config/constants/firebase';
 import { parseFirebaseGenePath } from './firebase-path-utils';
 import { NestLevelType, RemovableNestLevel } from 'app/pages/curation/collapsible/NestLevel';
 import { IDrug } from 'app/shared/model/drug.model';
+import { hasDuplicates, parseAlterationName } from '../utils';
+import pluralize from 'pluralize';
+import _ from 'lodash';
 
 /* Convert a nested object into an object where the key is the path to the object.
   Example:
@@ -220,4 +224,46 @@ export const sortByTxLevel = (a: TX_LEVELS, b: TX_LEVELS) => {
     return -1;
   }
   return aIndex > bIndex ? 1 : -1;
+};
+
+export const addVusValidation = (mutationList: Mutation[], vusList: VusObjList, variant: string) => {
+  if (variant !== '') {
+    const alterations = parseAlterationName(variant);
+    if (hasDuplicates(alterations)) {
+      return 'Name entered contains duplicate variants';
+    }
+    let duplicateAlts = [];
+    const mutationNames: string[] = _.uniq(
+      mutationList.reduce((acc, curr) => {
+        return acc.concat(getMutationName(curr).split(', '));
+      }, [])
+    );
+    for (const alt of alterations) {
+      if (mutationNames.some(mutationName => mutationName.toLowerCase() === alt.toLowerCase())) {
+        duplicateAlts.push(alt);
+      }
+    }
+    if (duplicateAlts.length > 0) {
+      return `The ${pluralize('variant', duplicateAlts.length)} ${duplicateAlts.join(', ')} ${pluralize(
+        'exist',
+        duplicateAlts.length < 2 ? 2 : 1
+      )} in the mutation list`;
+    }
+
+    duplicateAlts = [];
+    const vusNames = Object.values(vusList).reduce((acc, curr) => {
+      return acc.concat(parseAlterationName(curr.name));
+    }, []);
+    for (const alt of alterations) {
+      if (vusNames.some(vusName => vusName.toLowerCase() === alt.toLowerCase())) {
+        duplicateAlts.push(alt);
+      }
+    }
+    if (duplicateAlts.length > 0) {
+      return `The ${pluralize('variant', duplicateAlts.length)} ${duplicateAlts.join(', ')} ${pluralize(
+        'exist',
+        duplicateAlts.length < 2 ? 2 : 1
+      )} in the VUS list`;
+    }
+  }
 };

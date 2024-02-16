@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { BoolString, Comment, Vus, VusObjList } from 'app/shared/model/firebase/firebase.model';
+import { BoolString, Comment, Mutation, Vus, VusObjList } from 'app/shared/model/firebase/firebase.model';
 import OncoKBTable, { SearchColumn } from 'app/shared/table/OncoKBTable';
 import { Button, Container, Row } from 'reactstrap';
 import { SimpleConfirmModal } from 'app/shared/modal/SimpleConfirmModal';
@@ -20,9 +20,12 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { DANGER, PRIMARY } from 'app/config/colors';
 import { faSync } from '@fortawesome/free-solid-svg-icons/faSync';
 import classNames from 'classnames';
+import AddVusModal from '../modal/AddVusModal';
+import { FaPlus } from 'react-icons/fa';
 
 export interface IVusTableProps extends StoreProps {
   hugoSymbol: string;
+  mutationList: Mutation[];
 }
 
 type VusTableData = Vus & {
@@ -36,6 +39,7 @@ const LATEST_COMMENT = 'Latest Comment';
 
 const VusTable = ({
   hugoSymbol,
+  mutationList,
   account,
   vusData,
   addVusListener,
@@ -47,6 +51,7 @@ const VusTable = ({
   const firebaseVusPath = getFirebasePath('VUS', hugoSymbol);
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showAddVusModal, setShowAddVusModal] = useState(false);
 
   useEffect(() => {
     const cleanupCallback = addVusListener(firebaseVusPath);
@@ -233,13 +238,26 @@ const VusTable = ({
 
   return vusData ? (
     <div className={'justify-content-between align-items-center mt-4'}>
-      <div className={'d-flex align-items-baseline'}>
+      <div className={'d-flex align-items-baseline mb-2'}>
         <span style={{ fontSize: '1.25rem' }}>Variants of Unknown Significance (Investigated and data not found)</span>
+        <Button className="ml-2" color="primary" outline size="sm" onClick={() => setShowAddVusModal(true)}>
+          <FaPlus className="mr-2" />
+          <span>Add</span>
+        </Button>
         <Button onClick={handleDownload} color="primary" size="sm" outline className={'ml-2'}>
           Download
         </Button>
       </div>
       <OncoKBTable defaultSorted={[{ id: LAST_EDITED_AT, desc: false }]} data={vusList} columns={columns} showPagination />
+      <AddVusModal
+        mutationList={mutationList}
+        vusList={vusData}
+        show={showAddVusModal}
+        onConfirm={() => {}}
+        onCancel={() => {
+          setShowAddVusModal(false);
+        }}
+      />
       <SimpleConfirmModal
         title="Confirm deletion"
         body={'Are you sure you want to delete this variant?'}
