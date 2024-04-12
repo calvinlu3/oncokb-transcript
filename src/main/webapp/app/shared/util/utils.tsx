@@ -4,28 +4,23 @@ import { IAlteration } from '../model/alteration.model';
 import { v4 as uuidv4 } from 'uuid';
 import { IGene } from 'app/shared/model/gene.model';
 import { IEnsemblGene } from 'app/shared/model/ensembl-gene.model';
-import { ENTITY_ACTION, ENTITY_TYPE, REFERENCE_LINK_REGEX, SPECIAL_CANCER_TYPES } from 'app/config/constants/constants';
+import { ENTITY_ACTION, ENTITY_TYPE } from 'app/config/constants/constants';
 import EntityActionButton from '../button/EntityActionButton';
 import { SORT } from './pagination.constants';
 import { PaginationState } from '../table/OncoKBAsyncTable';
 import { IUser } from '../model/user.model';
-import { CancerType, Tumor } from '../model/firebase/firebase.model';
+import { CancerType } from '../model/firebase/firebase.model';
 import { ITreatment } from 'app/shared/model/treatment.model';
 import _ from 'lodash';
 import { ParsedRef, parseReferences } from 'app/oncokb-commons/components/RefComponent';
+import { INTEGER_REGEX, REFERENCE_LINK_REGEX, SINGLE_NUCLEOTIDE_POS_REGEX } from 'app/config/constants/regex';
 
 export const getCancerTypeName = (cancerType: ICancerType | CancerType, omitCode = false): string => {
-  let name = '';
-  if (cancerType) {
-    if (cancerType.subtype) {
-      name = cancerType.subtype;
-      if (!omitCode) {
-        name += ` (${cancerType.code})`;
-      }
-    } else {
-      name = cancerType.mainType;
-    }
-  }
+  if (!cancerType) return '';
+  if (!cancerType.subtype) return cancerType.mainType;
+
+  let name = cancerType.subtype;
+  if (!omitCode) name += ` (${cancerType.code})`;
   return name;
 };
 
@@ -283,7 +278,7 @@ export function findIndexOfFirstCapital(str: string) {
 }
 
 export function isNumeric(value: string) {
-  return /^-?\d+$/.test(value);
+  return INTEGER_REGEX.test(value);
 }
 
 /**
@@ -297,7 +292,7 @@ export function getHexColorWithAlpha(hexColor: string, alpha: number) {
 }
 
 export function extractPositionFromSingleNucleotideAlteration(alteration: string) {
-  const regex = /[a-zA-Z]+(\d+)(?!.*Fusion)/;
+  const regex = SINGLE_NUCLEOTIDE_POS_REGEX;
   const match = regex.exec(alteration);
   if (match) {
     return match[1];
