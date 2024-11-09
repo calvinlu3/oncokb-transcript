@@ -39,7 +39,7 @@ describe('End to end tests', () => {
     const SOMATIC_SELECTED_COLOR = '#0968c3';
     const GERMLINE_SELECTED_COLOR = '#ffc107';
 
-    await browser.url(`${BASE_URL}/curation/BRAF/somatic`);
+    await browser.url(`${BASE_URL}/curation`);
 
     let somaticButton = await $(`button[data-testid="${SOMATIC_TOGGLE_BUTTON_ID}"]`);
     let germlineButton = await $(`button[data-testid="${GERMLINE_TOGGLE_BUTTON_ID}"]`);
@@ -65,6 +65,7 @@ describe('End to end tests', () => {
 
     let openSidebarButton = await $(`span[data-testid="${OPEN_SIDEBAR_BUTTON_ID}"]`);
     let closeSidebarButton = await $(`span[data-testid="${CLOSE_SIDEBAR_BUTTON_ID}"]`);
+    await openSidebarButton.waitForDisplayed();
     expect(await openSidebarButton.isExisting()).toBe(true);
     expect(await closeSidebarButton.isExisting()).toBe(false);
 
