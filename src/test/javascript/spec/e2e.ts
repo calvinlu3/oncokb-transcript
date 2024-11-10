@@ -86,6 +86,7 @@ describe('End to end tests', () => {
     await pubMedLink.moveTo();
 
     const pubMedTitle = await $(`h5[data-testid="${PUB_MED_PMID}-pub-med-title"]`);
+    await pubMedTitle.waitForDisplayed();
     expect(pubMedTitle).toHaveText(PUB_MED_ARTICLE_TITLE);
   });
 
@@ -103,6 +104,9 @@ describe('End to end tests', () => {
     const mutationBreadcrumbsName = await $(`span[data-testid="${MUTATION_NAME_BREADCRUMB_ID}"]`);
     const mutationList = await $(`div[data-testid="${MUTATION_LIST_ID}"]`);
     const singleMutationView = await $(`div[data-testid="${SINGLE_MUTATION_VIEW_ID}"]`);
+    await mutationBreadcrumbsName.waitForDisplayed();
+    await mutationList.waitForDisplayed();
+    await singleMutationView.waitForDisplayed();
     expect(mutationBreadcrumbsName).toHaveText(mutation);
     expect(await mutationList.isDisplayed()).toBe(false);
     expect(singleMutationView).toExist();
@@ -124,9 +128,11 @@ describe('End to end tests', () => {
     const mutationDeleteBtn = await $(`div[data-testid='${getCollapsibleDataTestId(CollapsibleDataTestIdType.CARD, mutation)}']`).$(
       "svg[data-icon='trash-can']",
     );
+    await mutationDeleteBtn.waitForDisplayed();
     await mutationDeleteBtn.click();
 
     const confirmDeleteBtn = await $(`div[id='${DELETION_SECTION_MODAL_BUTTON_ID}']`).$('button=Confirm');
+    await confirmDeleteBtn.waitForDisplayed();
     await confirmDeleteBtn.click();
 
     // The mutation should be deleted and should not be rendered
