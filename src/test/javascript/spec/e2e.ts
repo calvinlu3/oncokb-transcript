@@ -105,7 +105,6 @@ describe('End to end tests', () => {
     const mutationList = await $(`div[data-testid="${MUTATION_LIST_ID}"]`);
     const singleMutationView = await $(`div[data-testid="${SINGLE_MUTATION_VIEW_ID}"]`);
     await mutationBreadcrumbsName.waitForDisplayed();
-    await mutationList.waitForDisplayed();
     await singleMutationView.waitForDisplayed();
     expect(mutationBreadcrumbsName).toHaveText(mutation);
     expect(await mutationList.isDisplayed()).toBe(false);
