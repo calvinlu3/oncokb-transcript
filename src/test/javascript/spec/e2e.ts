@@ -81,7 +81,8 @@ describe('End to end tests', () => {
     await browser.url(`${BASE_URL}/curation/BRAF/somatic`);
 
     const pubMedLink = await $(`span[data-testid="${PUB_MED_PMID}"]`);
-    await pubMedLink.waitForDisplayed();
+    await pubMedLink.waitForExist();
+    await pubMedLink.scrollIntoView();
 
     await pubMedLink.moveTo();
 
@@ -98,7 +99,7 @@ describe('End to end tests', () => {
     const mutationCollapsibleButton = await $(
       `div[data-testid="${getCollapsibleDataTestId(CollapsibleDataTestIdType.TITLE_WRAPPER, mutation)}"]`,
     );
-    await mutationCollapsibleButton.waitForDisplayed();
+    await mutationCollapsibleButton.waitForExist();
     await mutationCollapsibleButton.click();
 
     const mutationBreadcrumbsName = await $(`span[data-testid="${MUTATION_NAME_BREADCRUMB_ID}"]`);
@@ -118,7 +119,7 @@ describe('End to end tests', () => {
 
     // Click to open mutation modal
     const addMutationButton = await $('button=Add Mutation');
-    await addMutationButton.waitForDisplayed();
+    await addMutationButton.waitForExist();
     await addMutationButton.click();
 
     await createMutationOnCurationPage(mutation);
@@ -127,7 +128,7 @@ describe('End to end tests', () => {
     const mutationDeleteBtn = await $(`div[data-testid='${getCollapsibleDataTestId(CollapsibleDataTestIdType.CARD, mutation)}']`).$(
       "svg[data-icon='trash-can']",
     );
-    await mutationDeleteBtn.waitForDisplayed();
+    await mutationDeleteBtn.waitForExist();
     await mutationDeleteBtn.click();
 
     const confirmDeleteBtn = await $(`div[id='${DELETION_SECTION_MODAL_BUTTON_ID}']`).$('button=Confirm');
