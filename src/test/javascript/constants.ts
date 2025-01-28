@@ -21,3 +21,5 @@ export const SCREENSHOT_METHOD_OPTIONS: WdioCheckElementMethodOptions = {
 };
 
 export const ALLOWED_MISMATCH_PERCENTAGE = 0;
+
+export const test = 1;
